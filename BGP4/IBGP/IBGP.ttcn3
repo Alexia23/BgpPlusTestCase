@@ -1,0 +1,959 @@
+module IBGP
+{
+		// Common string subtypes  number indicates encoding length in number of 
+		// _hex digits/chars/octets_
+		type octetstring	Oct1 		length(1);
+		type octetstring	Oct2 		length(2); 
+		type octetstring	Oct3 		length(3); 
+		type octetstring	Oct4 		length(4); 
+		type octetstring	Oct6 		length(6);
+		type octetstring	Oct8 		length(8); 
+		type octetstring	Oct16 		length(16); 
+		type octetstring	Oct128 		length(128); 
+		type octetstring	Oct51 		length(51); 
+		//type octetstring	Oct1to128 	length(1..128); //with {encode "1 to 128 Octets"};
+		
+		//group	Module_Par
+		//{
+			//modulepar	{Oct4	MTC_IPv4 };
+			//modulepar	{Oct4	ROUTER_PCO1_IPv4 };
+			//modulepar	{Oct4	PTC1_IPv4 };
+			//modulepar	{Oct4	ROUTER_PCO2_IPv4 };
+			/*
+			const	Oct4		MTC_IPv4 := 'C0A801C3'O;			//192.168.1.195
+			const 	Oct4 	ROUTER_PCO1_IPv4 := 'C0A801A5'O;	//192.168.1.165
+			const 	Oct4		PTC1_IPv4	:= 'C0A80275'O;		//192.168.2.117
+			const 	Oct4		ROUTER_PCO2_IPv4 := 'C0A80201'O;	//192.168.2.1	
+			
+			'C0A801C3'O
+			'C0A801A5'O
+			'C0A80275'O
+			'C0A80201'O
+			*/
+		//}//end Module_Par*/
+		group BGP_CONSTANT
+		{
+			const Oct2 	AS_Number_MTC	:= '0046'O;		//70
+			const Oct2 	AS_Number_PTC1	:= '0050'O;		//80
+			const Oct2 	AS_Number_ROUTER 	:= '0001'O;		
+			/*
+			const Oct4 	MTC_IPv4		:= 'C0A801C3'O;	//192.168.1.195
+			const Oct4	PTC1_IPv4		:= 'C0A80275'O;	//192.168.2.117
+			const Oct4 	ROUTER_PCO1_IPv4 := 'C0A801A5'O;	//192.168.1.165
+			const Oct4	ROUTER_PCO2_IPv4 := 'C0A80201'O;	//192.168.2.1
+			*/
+			const Oct4 	MTC_IPv4		:= 'CA65010B'O;	//202.101.1.11
+			const Oct4	PTC1_IPv4		:= 'CA650216'O;	//202.101.3.22
+			const Oct4	PTC2_IPv4		:= '79650521'O;	//121.101.5.33
+			
+			const Oct4 	ROUTER_PCO1_IPv4 := 'CA650101'O;	//202.101.1.1
+			const Oct4	ROUTER_PCO2_IPv4 := 'CA650301'O;	//202.101.3.1
+			const Oct4	ROUTER_PCO3_IPv4 := '79650501'O;	//121.101.5.1
+			const integer HOLD_TIMER 	:= 190;			//unit-s
+			const Oct16	MY_IPv6		:= '3FFE3211000A00010000000000000002'O;	//3FFE:3211:A:1::2
+			const Oct8	MY_IPv6_PREFIX	:= '3FFE3211000B0002'O;	//3FFE:3211:B:2/64
+			const Oct16	ROUTER_IPv6	:= '3FFE3211000A00020000000000000001'O;	//3FFE:3211:A:2::1
+		}//end group BGP_CONSTANT
+		
+		group	PDU_TYPE
+		{
+			group	PDU_OPEN
+			{
+				type record BGP_OPEN
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct1	VERSION,
+					Oct2	MY_AS,
+					Oct2	HOLDTIME,
+					Oct4	ID,
+					Oct1	OPTION_LEN			
+				}//end record BGP_OPEN
+				
+				type record BGP_OPEN_TEMP
+				{
+					Oct16	MARKER,
+					Oct2		LENGTH,
+					Oct1		TYPE,
+					Oct1		VERSION,
+					Oct2		MY_AS,
+					Oct2		HOLDTIME,
+					Oct4		ID,
+					Oct1		OPTION_LEN,
+					Oct16	TEMP
+				}//end record BGP_OPEN_TEMP
+			}//end group PDU_OPEN
+			
+			group	PDU_NOTIFICATION
+			{
+				type	record	BGP_NOTIFICATION
+				{
+					Oct16	MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct1	ERR_CODE,
+					Oct1	ERR_SUBCODE
+				}// end record BGP_NOTIFICATION	
+			}// end group	PDU_NOTIFICATION
+			
+			group PDU_KEEPALIVE
+			{
+				type record BGP_KEEPALIVE
+				{
+					Oct16	MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE
+				}//	end record BGP_KEEPALIVE				
+			}// end group PDU_KEEPALIVE
+			
+			group	PDU_UPDATE
+			{
+				type	record	BGP_UPDATE_CAST
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,	
+					Oct2	UNFEASIBLE,
+					Oct2	PATHATTRIBUTE_LEN,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct1	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct2	AS_SEG_VAL,
+					Oct3	NEXT_HOP,
+					Oct4	NEXT_HOT_VAL,
+					Oct3	MED,
+					Oct4	MED_VAL,
+					Oct4	NLRI
+				}// end record BGP_UPDATE_CAST
+				
+				type	record	BGP_UPDATE_ERR
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct2	UNFEASIBLE,
+					Oct2	PATHATTRIBUTE_LEN,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct1	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct2	AS_SEG_VAL,
+					Oct3	NEXT_HOP,
+					Oct4	NEXT_HOT_VAL,
+					Oct4	NLRI		
+					
+				}// end record BGP_UPDATE_ERR
+				
+				type	record	BGP_UPDATE_MED
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,	
+					Oct2	UNFEASIBLE,
+					Oct2	PATHATTRIBUTE_LEN,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct1	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct2	AS_SEG_VAL,
+					Oct3	NEXT_HOP,
+					Oct4	NEXT_HOT_VAL,
+					Oct3	MED,
+					Oct4	MED_VAL,
+					Oct4	NLRI
+				}//end record BGP_UPDATE_MED
+				
+				type	record	BGP_UPDATE_ORIGIN_AS_N_IBGP
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,	
+					Oct2	UNFEASIBLE,
+					Oct2	PATHATTRIBUTE_LEN,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct1	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct2	AS_SEG_VAL,
+					Oct3	NEXT_HOP,
+					Oct4	NEXT_HOT_VAL,
+					Oct3	LOCAL_PREF,
+					Oct4	LOCAL_PREF_VAL,
+					Oct4	NLRI
+				}// end record BGP_UPDATE_ORIGIN_AS_N_IBGP
+				
+				type	record	BGP_UPDATE_MED_IBGP
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,	
+					Oct2	UNFEASIBLE,
+					Oct2	PATHATTRIBUTE_LEN,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct1	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct2	AS_SEG_VAL,
+					Oct3	NEXT_HOP,
+					Oct4	NEXT_HOT_VAL,
+					Oct3	MED,
+					Oct4	MED_VAL,
+					Oct3	LOCAL_PREF,
+					Oct4	LOCAL_PREF_VAL,
+					Oct4	NLRI
+				}// end record BGP_UPDATE_MED_IBGP
+				
+				type	record	BGP_UPDATE_IBGP
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,	
+					Oct2	UNFEASIBLE,
+					Oct2	PATHATTRIBUTE_LEN,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct1	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct2	AS_SEG_VAL,
+					Oct3	NEXT_HOP,
+					Oct4	NEXT_HOT_VAL,
+					Oct3	LOCAL_PREF,
+					Oct4	LOCAL_PREF_VAL,
+					Oct3	NLRI
+				}// end record BGP_UPDATE_IBGP
+				
+			}//end group PDU_UPADATE
+			
+			type record		BGP_CM
+			{
+				Oct1		DATA
+			}
+			
+		}//end group PDU_TYPE
+		
+		
+		group	TEMPL_OPEN
+		{
+			template	BGP_OPEN	OPEN_RECEIVE :=
+			{
+				MARKER 			:= ?,
+				LENGTH 			:= ?,
+				TYPE			:= '01'O,
+				VERSION			:= '04'O,
+				MY_AS			:= ?,
+				HOLDTIME		:= ?,
+				ID			:= ?,
+				OPTION_LEN		:= ?
+			};
+			
+			template	BGP_OPEN	OPEN_SEND :=
+			{
+				MARKER 			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH 			:= '001D'O,
+				TYPE			:= '01'O,
+				VERSION			:= '04'O,
+				MY_AS			:= AS_Number_MTC,
+				HOLDTIME		:= '00B4'O,	//180
+				ID			:= MTC_IPv4,
+				OPTION_LEN		:= '00'O
+			};
+			
+			template	BGP_OPEN	OPEN_SEND_IBGP :=
+			{
+				MARKER 			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH 			:= '001D'O,
+				TYPE				:= '01'O,
+				VERSION			:= '04'O,
+				MY_AS				:= AS_Number_ROUTER,
+				HOLDTIME		:= '00B4'O,	//180
+				ID					:= MTC_IPv4,
+				OPTION_LEN	:= '00'O
+			};
+			
+			template	BGP_OPEN	OPEN_SEND_PTC1 :=
+			{
+				MARKER 			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH 			:= '001D'O,
+				TYPE				:= '01'O,
+				VERSION			:= '04'O,
+				MY_AS				:= AS_Number_PTC1,
+				HOLDTIME		:= '00B4'O,	//180
+				ID					:= PTC1_IPv4,
+				OPTION_LEN	:= '00'O
+			};								
+			
+		}//end group	TEMPL_OPEN
+		
+		group	TEMPL_NOTIFICATION
+		{
+			template	BGP_NOTIFICATION		NOTIFICATION_RECEIVE :=
+			{
+				MARKER			:= ?,
+				LENGTH			:= ?,
+				TYPE			:= '03'O,
+				ERR_CODE		:= ?,
+				ERR_SUBCODE	:= ?
+			};
+			
+			template	BGP_NOTIFICATION	CEASE :=
+			{
+				MARKER			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH			:= '0015'O,
+				TYPE			:= '03'O,
+				ERR_CODE		:= '06'O,
+				ERR_SUBCODE	:= '00'O
+			};
+			
+		}//end group TEMPL_NOTIFICATION
+		
+		group	TEMPL_KEEPALIVE
+		{
+			template	BGP_KEEPALIVE		KEEPALIVE_SEND :=
+			{
+				MARKER 			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH 			:= '0013'O,		//19
+				TYPE			:= '04'O
+			};
+			
+			template	BGP_KEEPALIVE		KEEPALIVE_RECEIVE :=
+			{
+				MARKER	:= ?,
+				LENGTH	:= ?,
+				TYPE	:= '04'O
+			};
+		}//end group TEMPL_KEEPALIVE
+		             
+		template		BGP_CM		CM_READY :=
+		{
+			DATA := '01'O
+		};		
+		
+		group	TEMPL_UPDATE
+		{
+			template	BGP_UPDATE_ERR		UPDATE_RECEIVE :=
+			{
+				MARKER							:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH							:= ?,
+				TYPE								:= '02'O,
+				UNFEASIBLE					:= '0000'O,
+				PATHATTRIBUTE_LEN		:= ?,
+				ORIGIN							:= '400101'O,
+				ORIGIN_TYPE					:= ?,
+				AS_PATH							:= '4002'O,
+				AS_LEN							:= '04'O,
+				AS_SEG_TYPE					:= '02'O,
+				AS_SEG_LEN					:= '01'O,
+				AS_SEG_VAL					:= ?,
+				NEXT_HOP						:= '400304'O,
+				NEXT_HOT_VAL				:= ?,
+				NLRI								:= ?
+			};
+			
+			template	BGP_UPDATE_CAST		UPDATE_CAST :=
+			{
+				MARKER						:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH						:= ?,
+				TYPE							:= '02'O,
+				UNFEASIBLE				:= '0000'O,
+				PATHATTRIBUTE_LEN	:= ?,
+				ORIGIN						:= '400101'O,
+				ORIGIN_TYPE				:= '00'O,
+				AS_PATH						:= '4002'O,
+				AS_LEN						:= '04'O,
+				AS_SEG_TYPE				:= '02'O,
+				AS_SEG_LEN				:= '01'O,
+				AS_SEG_VAL				:= '0001'O,
+				NEXT_HOP					:= '400304'O,
+				NEXT_HOT_VAL			:= ROUTER_PCO1_IPv4,
+				MED								:= '800404'O,
+				MED_VAL						:= ?,
+				NLRI							:= ?
+			};	
+			
+			template	BGP_UPDATE_ERR		UPDATE_ORIGIN_0 :=
+			{
+				MARKER							:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH							:= '002D'O,
+				TYPE								:= '02'O,
+				UNFEASIBLE					:= '0000'O,
+				PATHATTRIBUTE_LEN		:= '0012'O,
+				ORIGIN							:= '400101'O,
+				ORIGIN_TYPE					:= '00'O,
+				AS_PATH							:= '4002'O,
+				AS_LEN							:= '04'O,
+				AS_SEG_TYPE					:= '02'O,
+				AS_SEG_LEN					:= '01'O,
+				AS_SEG_VAL					:= AS_Number_MTC,
+				NEXT_HOP						:= '400304'O,
+				NEXT_HOT_VAL				:= MTC_IPv4,
+				NLRI								:= '18C0A801'O	//24/192.168.1
+			};
+			
+			template	BGP_UPDATE_MED		UPDATE_MED :=
+			{
+				MARKER							:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH							:= '0034'O,
+				TYPE								:= '02'O,
+				UNFEASIBLE					:= '0000'O,
+				PATHATTRIBUTE_LEN		:= '0019'O,
+				ORIGIN							:= '400101'O,
+				ORIGIN_TYPE					:= '00'O,
+				AS_PATH							:= '4002'O,
+				AS_LEN							:= '04'O,
+				AS_SEG_TYPE					:= '02'O,
+				AS_SEG_LEN					:= '01'O,
+				AS_SEG_VAL					:= AS_Number_MTC,
+				NEXT_HOP						:= '400304'O,
+				NEXT_HOT_VAL				:= MTC_IPv4,
+				MED									:= '800404'O,
+				MED_VAL							:= '00000007'O,
+				NLRI								:= '18C0A801'O
+			};
+						
+			template	BGP_UPDATE_ORIGIN_AS_N_IBGP	UPDATE_ORIGIN_AS_N_IBGP :=
+			{
+				MARKER							:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH							:= '0034'O,
+				TYPE								:= '02'O,
+				UNFEASIBLE					:= '0000'O,
+				PATHATTRIBUTE_LEN		:= '0019'O,
+				ORIGIN							:= '400101'O,
+				ORIGIN_TYPE					:= '00'O,
+				AS_PATH							:= '4002'O,
+				AS_LEN							:= '04'O,
+				AS_SEG_TYPE					:= '02'O,
+				AS_SEG_LEN					:= '01'O,
+				AS_SEG_VAL					:= '0046'O,
+				NEXT_HOP						:= '400304'O,
+				NEXT_HOT_VAL				:= MTC_IPv4,
+				LOCAL_PREF					:= '400504'O,
+				LOCAL_PREF_VAL					:= ?,
+				NLRI								:= '18C0A801'O
+			};
+			
+			template	BGP_UPDATE_MED_IBGP	UPDATE_MED_IBGP :=
+			{
+				MARKER							:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH							:= '003B'O,
+				TYPE								:= '02'O,
+				UNFEASIBLE					:= '0000'O,
+				PATHATTRIBUTE_LEN		:= '0020'O,
+				ORIGIN							:= '400101'O,
+				ORIGIN_TYPE					:= '00'O,
+				AS_PATH							:= '4002'O,
+				AS_LEN							:= '04'O,
+				AS_SEG_TYPE					:= '02'O,
+				AS_SEG_LEN					:= '01'O,
+				AS_SEG_VAL					:= '0046'O,
+				NEXT_HOP						:= '400304'O,
+				NEXT_HOT_VAL				:= MTC_IPv4,
+				MED					:= '800404'O,
+				MED_VAL					:= ?,
+				LOCAL_PREF					:= '400504'O,
+				LOCAL_PREF_VAL					:= ?,
+				NLRI								:= '18C0A801'O
+			};
+
+			template	BGP_UPDATE_IBGP	UPDATE_IBGP	 :=
+			{
+				MARKER							:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH							:= '0033'O,
+				TYPE								:= '02'O,
+				UNFEASIBLE					:= '0000'O,
+				PATHATTRIBUTE_LEN		:= '0019'O,
+				ORIGIN							:= '400101'O,
+				ORIGIN_TYPE					:= '00'O,
+				AS_PATH							:= '4002'O,
+				AS_LEN							:= '04'O,
+				AS_SEG_TYPE					:= '02'O,
+				AS_SEG_LEN					:= '01'O,
+				AS_SEG_VAL					:= '0001'O,
+				NEXT_HOP						:= '400304'O,
+				NEXT_HOT_VAL				:= PTC1_IPv4,//CA710007
+				LOCAL_PREF					:= '400504'O,
+				LOCAL_PREF_VAL					:= '00000064'O,
+				NLRI								:= '109901'O
+			};
+						
+		}//end group TEMPL_UPADATE
+		
+		
+		group	Port
+		{
+			type port	BGP_Port		message
+			{
+				inout	all;
+			}
+			
+		}//end group Port
+		
+		group	TestAbstractComponent
+		{
+			type component	BGP_Component
+			{
+				port		BGP_Port		BGP_port_map;
+				port		BGP_Port		BGP_port_connect;
+				timer	BGP_Timer_Hold 		:= 190;
+				timer	BGP_Timer_KeepAlive 	:= 60; //unit-s
+				timer	Timer_Keepalive_Nego	 := 25;
+			
+			}
+			
+			type component	BGP_PTC_Component
+			{
+				port		BGP_Port		BGP_PTC_port_map;
+				port		BGP_Port		BGP_PTC_port_connect;
+				timer	BGP_PTC_Timer_Hold 		:= 190;
+				timer	BGP_PTC_Timer_KeepAlive 	:= 60; //unit-s
+				timer	BGP_PTC_Timer_Keepalive_Nego	 := 25;
+				timer	BGP_ConnectTimer	 := 7;
+			
+			}
+		}	//end group TestAbstractComponent
+		
+		group	TestSystemInterface
+		{
+			type component BGP_Interface
+			{
+				port 	BGP_Port		BGP_Interface_Port; 
+				port		BGP_Port		BGP_Interface_Port2;
+			}
+		}//end group TestSystemInterface
+		
+		group	MyFunctions
+		{
+			function	fun_ESTABLISHED_PCO1() runs on BGP_Component
+			{
+				BGP_port_map.send(OPEN_SEND);
+				BGP_Timer_Hold.start;
+				alt	//01
+				{//wait for receive open frame
+					[]BGP_port_map.receive(OPEN_RECEIVE)
+					{					
+						BGP_Timer_Hold.start;
+						alt	//02
+						{//wait for receive keepalive frame
+							[]BGP_port_map.receive(KEEPALIVE_RECEIVE)
+							{
+								BGP_port_map.send(KEEPALIVE_SEND);
+							}
+							[]BGP_Timer_Hold.timeout	
+							{
+								setverdict(fail);
+								stop;
+							}
+							[]BGP_port_map.receive	
+							{
+								setverdict(fail);
+								stop;
+							}
+						}//end alt 02
+					}//end alt 01
+					[]BGP_Timer_Hold.timeout
+					{
+						setverdict(fail);
+						stop;
+					}	
+					[]BGP_port_map.receive	
+					{
+						setverdict(fail);
+						stop;
+					}	
+				}
+			}// end function	fun_ESTABLISHED_PCO1()
+			
+			function	fun_ESTABLISHED_PCO2() runs on BGP_PTC_Component
+			{
+				BGP_PTC_port_map.send(OPEN_SEND_PTC1);
+				BGP_PTC_Timer_Hold.start;
+				alt	//01
+				{//wait for receive open frame
+					[]BGP_PTC_port_map.receive(OPEN_RECEIVE)
+					{					
+						BGP_PTC_Timer_Hold.start;
+						alt	//02
+						{//wait for receive keepalive frame
+							[]BGP_PTC_port_map.receive(KEEPALIVE_RECEIVE)
+							{
+								BGP_PTC_port_map.send(KEEPALIVE_SEND);
+							}
+							[]BGP_PTC_Timer_Hold.timeout	
+							{
+								setverdict(fail);
+								stop;
+							}
+							[]BGP_PTC_port_map.receive	
+							{
+								setverdict(fail);
+								stop;
+							}
+						}//end alt 02
+					}//end alt 01
+					[]BGP_PTC_Timer_Hold.timeout
+					{
+						setverdict(fail);
+						stop;
+					}	
+					[]BGP_PTC_port_map.receive	
+					{
+						setverdict(fail);
+						stop;
+					}	
+				}
+			}// end function	fun_ESTABLISHED_PCO2()
+			
+			function	fun_ESTABLISHED_PCO1_IBGP() runs on BGP_Component
+			{
+				BGP_port_map.send(OPEN_SEND_IBGP);
+				BGP_Timer_Hold.start;
+				alt	//01
+				{//wait for receive open frame
+					[]BGP_port_map.receive(OPEN_RECEIVE)
+					{					
+						BGP_Timer_Hold.start;
+						alt	//02
+						{//wait for receive keepalive frame
+							[]BGP_port_map.receive(KEEPALIVE_RECEIVE)
+							{
+								BGP_port_map.send(KEEPALIVE_SEND);
+							}
+							[]BGP_Timer_Hold.timeout	
+							{
+								setverdict(fail);
+								stop;
+							}
+							[]BGP_port_map.receive	
+							{
+								setverdict(fail);
+								stop;
+							}
+						}//end alt 02
+					}//end alt 01
+					[]BGP_Timer_Hold.timeout
+					{
+						setverdict(fail);
+						stop;
+					}	
+					[]BGP_port_map.receive	
+					{
+						setverdict(fail);
+						stop;
+					}	
+				}
+			}// end function	fun_ESTABLISHED_PCO1_IBGP()
+			
+			function	fun_ESTABLISHED_PCO2_IBGP() runs on BGP_PTC_Component
+			{
+				OPEN_SEND_IBGP.ID := PTC1_IPv4;
+				BGP_PTC_port_map.send(OPEN_SEND_IBGP);
+				BGP_PTC_Timer_Hold.start;
+				alt	//01
+				{//wait for receive open frame
+					[]BGP_PTC_port_map.receive(OPEN_RECEIVE)
+					{					
+						BGP_PTC_Timer_Hold.start;
+						alt	//02
+						{//wait for receive keepalive frame
+							[]BGP_PTC_port_map.receive(KEEPALIVE_RECEIVE)
+							{
+								BGP_PTC_port_map.send(KEEPALIVE_SEND);
+							}
+							[]BGP_PTC_Timer_Hold.timeout	
+							{
+								setverdict(fail);
+								stop;
+							}
+							[]BGP_PTC_port_map.receive	
+							{
+								setverdict(fail);
+								stop;
+							}
+						}//end alt 02
+					}//end alt 01
+					[]BGP_PTC_Timer_Hold.timeout
+					{
+						setverdict(fail);
+						stop;
+					}	
+					[]BGP_PTC_port_map.receive	
+					{
+						setverdict(fail);
+						stop;
+					}	
+				}
+			}// end function	fun_ESTABLISHED_PCO2_IBGP()
+			
+			function	fun_ptc_UPDATE_LOOP() runs on BGP_PTC_Component
+			{
+				var 	integer	HoldTimerValue := 190;
+				var	integer	KeepTimerValue := 60;
+								
+				fun_ESTABLISHED_PCO2_IBGP();
+				
+				BGP_ConnectTimer.start;
+				alt	//01
+				{
+					[]BGP_PTC_port_connect.receive(CM_READY)
+					{
+						BGP_PTC_Timer_KeepAlive.start;
+						label	L1;
+						alt	//02
+						{
+							[]BGP_PTC_port_map.receive(KEEPALIVE_RECEIVE)
+							{
+								BGP_PTC_port_map.send(KEEPALIVE_SEND);
+								BGP_PTC_Timer_KeepAlive.start;
+								alt	//03
+								{
+									[]BGP_PTC_port_map.receive(KEEPALIVE_RECEIVE)
+									{
+										setverdict(pass);
+										stop;
+									}
+									[]BGP_PTC_port_map.receive
+									{
+										setverdict(fail);
+										stop;
+									}
+									[]BGP_PTC_Timer_KeepAlive.timeout
+									{
+										setverdict(fail);
+										stop;
+									}
+								}//end alt 03
+							}
+							[]BGP_PTC_port_map.receive(UPDATE_CAST)
+							{
+								BGP_PTC_Timer_KeepAlive.start;
+								goto	L1;
+							}
+							[]BGP_PTC_Timer_KeepAlive.timeout	
+							{
+								setverdict(fail);
+								stop;
+							}	
+							[]BGP_PTC_port_map.receive	
+							{					
+								setverdict(fail);
+								stop;
+							}
+						}//end alt 02
+					}
+					[]BGP_ConnectTimer.timeout
+					{
+						setverdict(inconc);
+						stop;
+					}
+				}//end alt 01
+			}// end function fun_ptc_UPDATE_LOOP
+			
+			function	fun_ptc_UPDATE_ASPATH_IBGP() runs on BGP_PTC_Component
+			{
+				var 	integer	HoldTimerValue := 190;
+				var	integer	KeepTimerValue := 60;
+								
+				fun_ESTABLISHED_PCO2_IBGP();
+				
+				BGP_ConnectTimer.start;
+				alt	//01
+				{
+					[]BGP_PTC_port_connect.receive(CM_READY)
+					{
+						HoldTimerValue := HOLD_TIMER;
+						BGP_PTC_Timer_Hold.start(HoldTimerValue);
+						label	L1;
+						alt	//02
+						{
+							[]BGP_PTC_port_map.receive(KEEPALIVE_RECEIVE)
+							{
+								BGP_PTC_port_map.send(KEEPALIVE_SEND);
+								HoldTimerValue := HoldTimerValue - KeepTimerValue;
+								BGP_PTC_Timer_Hold.start(HoldTimerValue);
+								goto	L1;
+							}
+							[]BGP_PTC_port_map.receive(UPDATE_CAST)
+							{
+								BGP_PTC_Timer_Hold.start(HoldTimerValue);
+								goto	L1;
+							}
+							[]BGP_PTC_port_map.receive(UPDATE_ORIGIN_AS_N_IBGP)
+							{
+								setverdict(pass);
+								stop;
+							}
+							[]BGP_PTC_Timer_Hold.timeout	
+							{
+								setverdict(fail);
+								stop;
+							}	
+							[]BGP_PTC_port_map.receive	
+							{					
+								setverdict(fail);
+								stop;
+							}
+						}//end alt 02
+					}
+					[]BGP_ConnectTimer.timeout
+					{
+						setverdict(inconc);
+						stop;
+					}
+				}//end alt 01
+			}// end function fun_ptc_UPDATE_ASPATH_IBGP
+			
+			function	fun_ptc_UPDATE_MED_IBGP() runs on BGP_PTC_Component
+			{
+				var 	integer	HoldTimerValue := 190;
+				var	integer	KeepTimerValue := 60;
+								
+				fun_ESTABLISHED_PCO2_IBGP();
+				
+				BGP_ConnectTimer.start;
+				alt	//01
+				{
+					[]BGP_PTC_port_connect.receive(CM_READY)
+					{
+						HoldTimerValue := HOLD_TIMER;
+						BGP_PTC_Timer_Hold.start(HoldTimerValue);
+						label	L1;
+						alt	//02
+						{
+							[]BGP_PTC_port_map.receive(KEEPALIVE_RECEIVE)
+							{
+								BGP_PTC_port_map.send(KEEPALIVE_SEND);
+								HoldTimerValue := HoldTimerValue - KeepTimerValue;
+								BGP_PTC_Timer_Hold.start(HoldTimerValue);
+								goto	L1;
+							}
+							[]BGP_PTC_port_map.receive(UPDATE_CAST)
+							{
+								BGP_PTC_Timer_Hold.start(HoldTimerValue);
+								goto	L1;
+							}
+							[]BGP_PTC_port_map.receive(UPDATE_MED_IBGP)
+							{
+								setverdict(pass);
+								stop;
+							}
+							[]BGP_PTC_Timer_Hold.timeout	
+							{
+								setverdict(fail);
+								stop;
+							}	
+							[]BGP_PTC_port_map.receive	
+							{					
+								setverdict(fail);
+								stop;
+							}
+						}//end alt 02
+					}
+					[]BGP_ConnectTimer.timeout
+					{
+						setverdict(inconc);
+						stop;
+					}
+				}//end alt 01
+			}// end function fun_ptc_UPDATE_MED_IBGP
+			
+		}//end group Functions
+		
+		group	Testcases
+		{
+			testcase		R_UPDATE_ALL_IBGP()	runs on BGP_Component	system BGP_Interface	
+			{
+				var	BGP_PTC_Component	v_ptc := BGP_PTC_Component.create;
+							
+				connect(self:BGP_port_connect, v_ptc:BGP_PTC_port_connect);
+				
+				map(mtc:BGP_port_map, system:BGP_Interface_Port);
+				
+				map(v_ptc:BGP_PTC_port_map, system:BGP_Interface_Port2);
+				
+				v_ptc.start(fun_ptc_UPDATE_LOOP());			
+				
+				BGP_port_connect.send(CM_READY);
+				
+				fun_ESTABLISHED_PCO1_IBGP();
+				
+				BGP_port_map.send(UPDATE_IBGP);
+				
+				alt
+				{
+					[]v_ptc.done
+					{
+						stop;
+					}
+				}
+			}//end testcase R_UPDATE_ALL_IBGP
+			
+			testcase		R_UPDATE_ASPATH_IBGP()	runs on BGP_Component	system BGP_Interface	
+			{
+				var	BGP_PTC_Component	v_ptc := BGP_PTC_Component.create;
+							
+				connect(self:BGP_port_connect, v_ptc:BGP_PTC_port_connect);
+				
+				map(mtc:BGP_port_map, system:BGP_Interface_Port);
+				
+				map(v_ptc:BGP_PTC_port_map, system:BGP_Interface_Port2);
+				
+				v_ptc.start(fun_ptc_UPDATE_ASPATH_IBGP());			
+				
+				BGP_port_connect.send(CM_READY);
+				
+				fun_ESTABLISHED_PCO1();
+				
+				BGP_port_map.send(UPDATE_ORIGIN_0);
+				
+				alt
+				{
+					[]v_ptc.done
+					{
+						stop;
+					}
+				}
+			}//end testcase R_UPDATE_ASPATH_IBGP
+			
+			testcase		R_UPDATE_MED_IBGP()	runs on BGP_Component	system BGP_Interface	
+			{
+				var	BGP_PTC_Component	v_ptc := BGP_PTC_Component.create;
+							
+				connect(self:BGP_port_connect, v_ptc:BGP_PTC_port_connect);
+				
+				map(mtc:BGP_port_map, system:BGP_Interface_Port);
+				
+				map(v_ptc:BGP_PTC_port_map, system:BGP_Interface_Port2);
+				
+				v_ptc.start(fun_ptc_UPDATE_MED_IBGP());			
+				
+				BGP_port_connect.send(CM_READY);
+				
+				fun_ESTABLISHED_PCO1();
+				
+				BGP_port_map.send(UPDATE_MED);
+				
+				alt
+				{
+					[]v_ptc.done
+					{
+						stop;
+					}
+				}
+			}//end testcase R_UPDATE_MED_IBGP
+			
+		}//end group Testcases
+				
+}//end module IBGP

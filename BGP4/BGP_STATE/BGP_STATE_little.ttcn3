@@ -1,0 +1,532 @@
+module BGP_STATE_little
+{
+		group BGP_CONSTANT
+		{
+			const Oct2 	AS_Number_C	:= '0048'O;		//72
+			const Oct4 	C_IPv4		:= 'C0A8C980'O; //192.168.201.128
+			
+			const Oct2 	AS_Number_B	:= '0047'O;		//71
+			const Oct4 	B_IPv4		:= 'C0A8C581'O; //192.168.197.129
+			
+			const Oct2 	AS_Number_A	:= '0046'O;		//70
+			const Oct4 	A_IPv4		:= 'C0A83080'O; //192.168.48.128
+			
+			const integer HOLD_TIMER 	:= 190;		
+		}//end group BGP_CONSTANT
+		
+		// Common string subtypes  number indicates encoding length in number of 
+		// _hex digits/chars/octets_
+		type octetstring	Oct1 		length(1);
+		type octetstring	Oct2 		length(2); 
+		type octetstring	Oct3 		length(3); 
+		type octetstring	Oct4 		length(4); 
+		type octetstring	Oct6 		length(6); 
+		type octetstring	Oct16 		length(16); 
+		type octetstring      Oct30           length(30);
+		type octetstring	Oct128 		length(128); 
+		//type octetstring	Oct1to128 	length(1..128); //with {encode "1 to 128 Octets"};
+			
+		group	PDU_TYPE
+		{
+			group	PDU_OPEN
+			{
+				type record BGP_OPEN
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct1	VERSION,
+					Oct2	MY_AS,
+					Oct2	HOLDTIME,
+					Oct4	ID,
+					Oct1	OPTION_LEN			
+				}//	end record BGP_OPEN
+				
+				type record BGP_OPEN_OPTS_KEEPALIVE
+				{
+					Oct16   MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct1	VERSION,
+					Oct2	MY_AS,
+					Oct2	HOLDTIME,
+					Oct4	ID,
+					Oct1    OPTION_LEN,
+					Oct30	OPTION_DATA,	
+					Oct16	MARKER_KEEP,
+					Oct2	LENGTH_KEEP,
+					Oct1	TYPE_KEEP
+				}//	end record BGP_OPEN_OPTS_KEEPALIVE
+				
+				type	record BGP_OPEN_OPT
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct1	VERSION,
+					Oct2	MY_AS,
+					Oct2	HOLDTIME,
+					Oct4	ID,
+					Oct1	OPTION_LEN,
+					Oct1	PARM_TYPE,
+					Oct1	PARM_LEN
+				}// end record BGP_OPEN_OPT	
+				
+				type	record	BGP_OPEN_AUTH
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct1	VERSION,
+					Oct2	MY_AS,
+					Oct2	HOLDTIME,
+					Oct4	ID,
+					Oct1	OPTION_LEN,
+					Oct1	PARM_TYPE,
+					Oct1	PARM_LEN,
+					Oct1	AUTH_CODE,
+					Oct1	AUTH_DATA
+				}// end record BGP_OPEN_AUTH
+			}//end group PDU_OPEN
+						
+			group	PDU_NOTIFICATION
+			{
+				type	record	BGP_NOTIFICATION
+				{
+					Oct16	MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct1	ERR_CODE,
+					Oct1	ERR_SUBCODE
+				}// end record BGP_NOTIFICATION				
+			}// end group	PDU_NOTIFICATION
+			
+			group PDU_KEEPALIVE
+			{
+				type record BGP_KEEPALIVE
+				{
+					Oct16	MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE
+				}//	end record BGP_KEEPALIVE				
+			}// end group PDU_KEEPALIVE
+			
+			group	PDU_UPDATE
+			{
+				type	record	BGP_UPDATE_ERR
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct2	UNFEASIBLE,
+					Oct2	PATHATTRIBUTE_LEN,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct1	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct2	AS_SEG_VAL,
+					Oct3	NEXT_HOP,
+					Oct4	NEXT_HOT_VAL,
+					Oct4	NLRI						
+				}// end record 
+			}//end group PDU_UPDATE
+			
+		}//end group PDU_TYPE
+		
+		group	TEMPL_OPEN
+		{
+			template	BGP_OPEN	OPEN_SEND :=
+			{
+				MARKER 			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH 			:= '001D'O,
+				TYPE				:= '01'O,
+				VERSION			:= '04'O,
+				MY_AS				:= AS_Number_A,
+				HOLDTIME		:= '00B4'O,	//180
+				ID					:= A_IPv4,
+				OPTION_LEN	:= '00'O
+			};
+			
+			template	BGP_OPEN	OPEN_RECEIVE :=
+			{
+				MARKER 			:= ?,
+				LENGTH 			:= ?,
+				TYPE				:= '01'O,
+				VERSION			:= '04'O,
+				MY_AS				:= ?,
+				HOLDTIME		:= ?,
+				ID					:= ?,
+				OPTION_LEN	:= ?
+			};
+			
+			template BGP_OPEN_OPTS_KEEPALIVE           OPEN_AND_KEEPALIVE_RECEIVE :=
+			{
+				MARKER 			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH 		        := '003b'O,
+				TYPE			:= '01'O,
+				VERSION			:= '04'O,    
+				MY_AS			:= ?,
+				HOLDTIME		:= ?,
+				ID			:= ?,
+				OPTION_LEN	        := '1e'O, 
+				OPTION_DATA             :=?,	
+				MARKER_KEEP		        := 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH_KEEP		        := '0013'O,
+				TYPE_KEEP                    := '04'O
+			};
+			
+			template	BGP_OPEN	OPEN_KEEPALIVE_NEGO :=
+			{
+				MARKER 			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH 			:= '001D'O,
+				TYPE				:= '01'O,
+				VERSION			:= '04'O,
+				MY_AS				:= AS_Number_A,
+				HOLDTIME		:= '003C'O,
+				ID					:= 'CA7001E3'O,
+				OPTION_LEN	:= '00'O
+			};
+			
+			template	BGP_OPEN	OPEN_HOLDTIME_ZERO :=
+			{
+				MARKER 			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH 			:= '001D'O,
+				TYPE				:= '01'O,
+				VERSION			:= '04'O,
+				MY_AS				:= AS_Number_A,
+				HOLDTIME		:= '0000'O,
+				ID					:= 'CA7001E3'O,
+				OPTION_LEN	:= '00'O
+			};
+		}//end group TEMPL_OPEN
+		
+		group	TEMPL_NOTIFICATION
+		{
+			template	BGP_NOTIFICATION		NOTIFICATION_SEND :=
+			{
+				MARKER			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH			:= '0015'O,
+				TYPE				:= '03'O,
+				ERR_CODE		:= '01'O,
+				ERR_SUBCODE	:= '01'O
+			};
+			
+			template	BGP_NOTIFICATION		NOTIFICATION_RECEIVE :=
+			{
+				MARKER			:= ?,
+				LENGTH			:= ?,
+				TYPE				:= '03'O,
+				ERR_CODE		:= ?,
+				ERR_SUBCODE	:= ?
+			};
+			
+			template	BGP_NOTIFICATION	CEASE :=
+			{
+				MARKER			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH			:= '0015'O,
+				TYPE			:= '03'O,
+				ERR_CODE		:= '06'O,
+				ERR_SUBCODE	:= '00'O
+			};
+			
+			template	BGP_NOTIFICATION	NOTIFICATION_UPDATE_ERROR :=
+			{
+				MARKER			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH			:= '0015'O,
+				TYPE				:= '03'O,
+				ERR_CODE		:= '01'O,
+				ERR_SUBCODE	:= '01'O
+			};
+			
+			template	BGP_NOTIFICATION	NOTIFICATION_MARKER_ERROR :=
+			{
+				MARKER			:= '00000000000000000000000000000000'O,
+				LENGTH			:= '0017'O,
+				TYPE				:= '03'O,
+				ERR_CODE		:= '01'O,
+				ERR_SUBCODE	:= '01'O
+			};
+			
+			template	BGP_NOTIFICATION	NOTIFICATION_LEN_LESS :=
+			{
+				MARKER			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH			:= '0014'O,
+				TYPE				:= '03'O,
+				ERR_CODE		:= '01'O,
+				ERR_SUBCODE	:= '01'O
+			};
+			
+			template	BGP_NOTIFICATION	NOTIFICATION_LEN_GREATER :=
+			{
+				MARKER			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH			:= '0018'O,
+				TYPE				:= '03'O,
+				ERR_CODE		:= '01'O,
+				ERR_SUBCODE	:= '01'O
+			};
+			
+		}//end group TEMPL_NOTIFICATION
+		
+		group	TEMPL_KEEPALIVE
+		{
+			template	BGP_KEEPALIVE		KEEPALIVE_SEND :=
+			{
+				MARKER	:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH	:= '0013'O,
+				TYPE		:= '04'O
+			};
+			
+			template	BGP_KEEPALIVE		KEEPALIVE_RECEIVE :=
+			{
+				MARKER	:= ?,
+				LENGTH	:= ?,
+				TYPE		:= '04'O
+			};
+			
+			template	BGP_KEEPALIVE		KEEPALIVE_MARKER_ERROR :=
+			{
+				MARKER	:= '00000000000000000000000000000000'O,
+				LENGTH	:= '0013'O,
+				TYPE		:= '04'O
+			};
+			
+			template	BGP_KEEPALIVE		KEEPALIVE_TYPE_ERROR :=
+			{
+				MARKER	:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH	:= '0013'O,
+				TYPE		:= '07'O
+			};
+			
+			template	BGP_KEEPALIVE		KEEPALIVE_LEN_GREATER :=
+			{
+				MARKER	:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH	:= '0014'O,
+				TYPE		:= '04'O
+			};			
+		}//end group TEMPL_KEEPALIVE
+		
+		template	BGP_UPDATE_ERR		UPDATE_SEND :=
+		{
+			MARKER							:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+			LENGTH							:= '002D'O,
+			TYPE								:= '02'O,
+			UNFEASIBLE					:= '0000'O,
+			PATHATTRIBUTE_LEN		:= '0012'O,
+			ORIGIN							:= '400101'O,
+			ORIGIN_TYPE					:= '00'O,
+			AS_PATH							:= '4002'O,
+			AS_LEN							:= '04'O,
+			AS_SEG_TYPE					:= '02'O,
+			AS_SEG_LEN					:= '01'O,
+			AS_SEG_VAL					:= AS_Number_A,
+			NEXT_HOP						:= '400304'O,
+			NEXT_HOT_VAL				:= A_IPv4,
+			NLRI								:= '18C0A831'O
+		};
+		
+		template	BGP_UPDATE_ERR		UPDATE_RECEIVE :=
+		{
+			MARKER							:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+			LENGTH							:= ?,
+			TYPE								:= '02'O,
+			UNFEASIBLE	     				:= '0000'O,
+			PATHATTRIBUTE_LEN		:= ?,
+			ORIGIN							:= '400101'O,
+			ORIGIN_TYPE					:= ?,
+			AS_PATH							:= '4002'O,
+			AS_LEN							:= '04'O,
+			AS_SEG_TYPE					:= '02'O,
+			AS_SEG_LEN					:= '01'O,
+			AS_SEG_VAL					:= ?,
+			NEXT_HOP						:= '400304'O,
+			NEXT_HOT_VAL				:= ?,
+			NLRI								:= ?
+		};
+		
+		group	Port
+		{
+			type port	BGP_Port	message
+			{
+				inout	BGP_OPEN,	BGP_KEEPALIVE
+			}		
+		}//end group Port
+		
+		group	TestAbstractComponent
+		{
+			type component	BGP_Component
+			{
+				port		BGP_Port		BGPP;
+				timer	BGP_Timer_Hold := 190;
+				timer	BGP_Timer_KeepAlive := 60; //unit-s
+				timer	Timer_Keepalive_Nego := 25;
+			
+			}
+		}	//end group TestAbstractComponent
+		
+		group	TestSystemInterface
+		{
+			type component BGP_Interface
+			{
+				port 	BGP_Port		BGP_Interface_PortA; 
+				port   BGP_Port                BGP_Interface_PortB;
+				port   BGP_Port                BGP_Interface_PortC;
+			}
+		}//end group TestSystemInterface
+		
+		
+		function	fun_ESTABLISHED() runs on BGP_Component
+		{
+			BGPP.send(OPEN_SEND);
+			BGP_Timer_Hold.start;
+			alt	//01
+			{//wait for receive open frame
+				[]BGPP.receive(OPEN_RECEIVE)
+				{					
+					BGP_Timer_Hold.start;
+					alt	//02
+					{//wait for receive keepalive frame
+						[]BGPP.receive(KEEPALIVE_RECEIVE)
+						{
+							BGPP.send(KEEPALIVE_SEND);
+						}
+						[]BGP_Timer_Hold.timeout	
+						{
+							setverdict(fail);
+							stop;
+						}
+						[]BGPP.receive	
+						{
+							setverdict(fail);
+							stop;
+						}
+					}//end alt 02
+				}
+				[]BGP_Timer_Hold.timeout
+				{
+					setverdict(fail);
+					stop;
+				}	
+				[]BGPP.receive	
+				{
+					setverdict(fail);
+					stop;
+				}	
+			}//end alt 01
+		}// end function	fun_ESTABLISHED()
+		
+		testcase BGP_SEND_DATA_PACKAGE() runs on BGP_Component system BGP_Interface
+		{
+			map(mtc:BGPP, system:BGP_Interface_PortB);
+			BGPP.send(OPEN_SEND);
+		}
+		
+		/* Test send update frame*/
+		testcase	BGP_SEND_UPDATE()	runs on BGP_Component system BGP_Interface
+		{
+			map(mtc:BGPP, system:BGP_Interface_PortA);
+			BGPP.send(OPEN_SEND);
+			BGP_Timer_Hold.start;
+			alt	//01
+			{//wait for receive open frame
+				[]BGPP.receive(OPEN_AND_KEEPALIVE_RECEIVE)
+				{
+					BGPP.send(KEEPALIVE_SEND);
+					BGP_Timer_KeepAlive.start;
+					alt	//02
+					{//wait for receive keepalive frame
+						[]BGPP.receive(KEEPALIVE_RECEIVE)
+						{
+							BGPP.send(UPDATE_SEND);
+							BGP_Timer_Hold.start;
+							alt	//03
+							{
+								[]BGPP.receive(NOTIFICATION_RECEIVE)
+								{
+									setverdict(pass);
+									stop;
+								}
+								[]BGP_Timer_Hold.timeout
+								{
+									setverdict(fail);
+									stop;
+								}
+								[]BGPP.receive
+								{
+									setverdict(fail);
+									stop;
+								}
+							}//end alt 03
+						}
+						[]BGP_Timer_KeepAlive.timeout
+						{
+							setverdict(fail);
+							stop;
+						}
+						[]BGPP.receive
+						{
+							setverdict(fail);
+							stop;
+						}
+					}//end alt 02	
+				}
+				[]BGP_Timer_Hold.timeout	
+				{
+					setverdict(fail);
+					stop;
+				}	
+				[]BGPP.receive	
+				{					
+					setverdict(fail);
+					stop;
+				}
+			}// end alt 01
+		}// end testcase BGP_SEND_UPDATE()
+		
+		/* Test after establish state,receive and send keepalive frame then send notification frame*/
+		testcase	BGP_ESTABLISH_OPEN()	runs on BGP_Component system BGP_Interface
+		{
+			map(mtc:BGPP, system:BGP_Interface_PortA);
+			
+			BGPP.send(OPEN_SEND);
+			BGP_Timer_Hold.start;
+			alt	//01
+			{//wait for receive open frame
+				[]BGPP.receive(OPEN_AND_KEEPALIVE_RECEIVE)
+				{
+					BGPP.send(KEEPALIVE_SEND);
+					BGP_Timer_KeepAlive.start;
+					alt	//02
+					{//wait for receive keepalive frame
+						[]BGPP.receive(KEEPALIVE_RECEIVE)
+						{
+							setverdict(pass);
+							stop;
+						}
+						[]BGP_Timer_KeepAlive.timeout
+						{
+							setverdict(fail);
+							stop;
+						}
+						[]BGPP.receive
+						{
+							setverdict(fail);
+							stop;
+						}
+					}//end alt 02	
+				}
+				[]BGP_Timer_Hold.timeout	
+				{
+					setverdict(fail);
+					stop;
+				}
+				[]BGPP.receive	
+				{					
+					setverdict(fail);
+					stop;
+				}
+			}// end alt 01
+		}// end testcase BGP_ESTABLISH_OPEN()
+		
+}//end module BGP_STATE
