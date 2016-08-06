@@ -15,6 +15,9 @@ import java.net.Socket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Vector;
+import java.net.DatagramSocket;
+import java.net.DatagramPacket;
+import java.net.UnknownHostException;
 /*
 import cn.edu.tsinghua.cs.cnpt.ttcn.tci.TciEncoding;
 import cn.edu.tsinghua.cs.cnpt.ttcn.tri.TestAdapter;
@@ -46,8 +49,11 @@ public class BGP_TestAdapter extends TestAdapter implements TriCommunicationSA,T
 	private Thread tcpReceiverThread = null;
 	private boolean runThread = false;
 	private Socket rxSocket; // the receiver UDP socket used for asynchronous communication
+	private DatagramSocket  udpSocket;
+	private DatagramPacket udpPacket;
 	InputStream is;
 	OutputStream os;
+	boolean tcpFlag = false;
     
 	public BGP_TestAdapter()
 	{
@@ -245,20 +251,19 @@ public class BGP_TestAdapter extends TestAdapter implements TriCommunicationSA,T
 		//quicknotepad.textArea.append("naive6\t"+tsiPortId.getPortName());
 		//RB.logging.logDatapackets("naive6\t"+tsiPortId.getPortName());
 		String ipAddr = "";
-		boolean tcpFlag = false;
 		if (tsiPortId.getPortName().equals("BGP_Interface_PortA"))
 		{
-			ipAddr = "192.168.48.129";
+			ipAddr = "2001:0:2::6";
 			tcpFlag = true;
 		}
 		else if (tsiPortId.getPortName().equals("BGP_Interface_PortB"))
 		{
-			ipAddr = "192.168.197.130";
+			ipAddr = "2001:0:3::6";
 			tcpFlag = false;
 		}
 		else if (tsiPortId.getPortName().equals("BGP_Interface_PortC"))
 		{
-			ipAddr = "192.168.201.129";
+			ipAddr = "2001:0:1::6";
 		}
 		else
 		{
@@ -268,7 +273,7 @@ public class BGP_TestAdapter extends TestAdapter implements TriCommunicationSA,T
 			return new TriStatusImpl("triUnmap: (from: " + compPortId +", to: " + tsiPortId + ") not implemented");
 		}
 		
-		if (ipAddr.compareTo("") != 0 and tcpFlag == true)
+		if (ipAddr.compareTo("") != 0 && tcpFlag == true)
 		{
 			// prepare to be ready to communicate           
 			try
@@ -414,9 +419,13 @@ public class BGP_TestAdapter extends TestAdapter implements TriCommunicationSA,T
 			}
 			// listen on the receiver socket            
 		}
-		else if (ipAddr.compareTo("") != 0 and tcpFlag == false) 
+		else if (ipAddr.compareTo("") != 0 && tcpFlag == false) 
 		{
-			tcpFlag = false;
+			try {
+				udpSocket = new DatagramSocket(20086);
+			} catch (Exception ex) {
+				RB.logging.logDatapackets("\n"+ex.toString());
+			}
 		}
 		else
 		{// Indicates an error. Attention: NOT TRI CONFORM !
@@ -446,30 +455,60 @@ public class BGP_TestAdapter extends TestAdapter implements TriCommunicationSA,T
 	public TriStatus triSend(TriComponentId componentId, TriPortId tsiPortId,TriAddress address, TriMessage sendMessage)
 	{
 		RB.logging.logDatapackets("\nBegin the triSend():\t\n");
-		try
+		if (tcpFlag == true)
 		{
-			byte[] mesg = sendMessage.getEncodedMessage();
-			RB.logging.logDatapackets("MyBGPTestAdapter: Sending (to:Router )"+ mesg.length+" Btyes" );
-			os.write(mesg);
-			//os.flush();
-			//print the send messege
-			RB.logging.logDatapackets("\nSending  Length= "+mesg.length+"bytes Packet :");
-			for (int j =0;j<mesg.length;j++)
+			try
 			{
-				if(j%16==0)
-					RB.logging.logDatapackets("\n");
-				StringBuffer hexvalue=new StringBuffer(Integer.toHexString((int)((mesg[j]+256)%256)));
-				if(hexvalue.length()==1)
+				byte[] mesg = sendMessage.getEncodedMessage();
+				RB.logging.logDatapackets("MyBGPTestAdapter: Sending (to:Router )"+ mesg.length+" Btyes" );
+				os.write(mesg);
+				//os.flush();
+				//print the send messege
+				RB.logging.logDatapackets("\nSending  Length= "+mesg.length+"bytes Packet :");
+				for (int j =0;j<mesg.length;j++)
+				{
+					if(j%16==0)
+						RB.logging.logDatapackets("\n");
+					StringBuffer hexvalue=new StringBuffer(Integer.toHexString((int)((mesg[j]+256)%256)));
+					if(hexvalue.length()==1)
 					{ hexvalue=hexvalue.insert(0,"0"); }
-				RB.logging.logDatapackets(hexvalue+" ");
-			} //print the packet of sending
-			return new TriStatusImpl();
-		}
-		catch (Exception ioex)
+					RB.logging.logDatapackets(hexvalue+" ");
+				} //print the packet of sending
+				return new TriStatusImpl();
+			}
+			catch (Exception ioex)
+			{
+				RB.logging.logDatapackets("\n"+ioex.toString());
+				return new TriStatusImpl(ioex.getMessage());
+			}
+		} 
+		else 
 		{
-			RB.logging.logDatapackets("\n"+ioex.toString());
-			return new TriStatusImpl(ioex.getMessage());
+			RB.logging.logDatapackets("\n Send Data By Udp\t\n");
+			byte[] buf = "UDP Demo".getBytes();
+		
+			byte[] addr = new byte[]{(byte)192, (byte)168, 49, 2};
+			InetAddress udpDestIP;
+			try {
+				udpDestIP = InetAddress.getByAddress(addr);
+				udpPacket = new DatagramPacket(buf,buf.length, udpDestIP, 20087);//10000为定义的端口	
+			} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+				RB.logging.logDatapackets("\n" + e.toString() + " packet error\t\n");
+			}
+			try 
+			{
+				udpSocket.send(udpPacket);
+				RB.logging.logDatapackets("\nsend succeed!\t\n");
+				return new TriStatusImpl();
+			}
+			catch (Exception ex)
+			{
+				RB.logging.logDatapackets("\n"+ex.toString() + "send error\t\n");
+				return new TriStatusImpl(ex.getMessage());
+			}
 		}
+		
 	} // end public TriStatus triSend()
 
 	/**

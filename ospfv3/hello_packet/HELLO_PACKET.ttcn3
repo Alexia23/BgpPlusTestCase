@@ -1,0 +1,3964 @@
+module HELLO_PACKET {   	
+	
+	//const Oct4 SourceIP :='C0A801A5'O;
+	//const Oct4 DestIP :='00000000'O;
+	type bitstring		Bit20 	length(20) ;
+	type hexstring		Hex8 	length(8) ;
+	type octetstring	Oct20 	length(20) ;
+	type octetstring	Oct40 	length(40) ;
+	type octetstring	Oct1 	length(1) ;
+	type octetstring	Oct2 	length(2) ;
+	type octetstring	Oct3 	length(3) ;
+	type octetstring	Oct4 	length(4) ;
+	type octetstring	Oct8 	length(8) ;
+	type octetstring 	Oct16 	length(16);
+	type bitstring 	Bit13 	length(13);
+	type bitstring 	Bit3 	length(3);
+	
+	modulepar {Oct4 SourceIP };
+	modulepar {Oct4 DestIP };
+	
+	group group_modulepar 
+	{
+		const Oct4 mp_IUT_RID :='01010101'O;		//Router under Test;
+		const Oct16 mp_IUT_Link_Local:='FE80000000000000020BBEFFFE020B05'O;
+		const Oct4 mp_IUT_Ifc_ID:='00000004'O;
+		const Oct4 mp_IUT_Area :='00000000'O;
+		const Oct1 mp_IUT_Pri  :='02'O;
+		const Oct3 mp_IUT_Opt :='000013'O;
+		const Oct8 mp_IUT_Prefix1 := '3FFE3211000A0001'O;
+
+		const Oct4 mp_TS_RID :='02020202'O;	
+		const Oct4 mp_TS_RID2 :='01010100'O;
+		//const Oct4 mp_TS_Ifc_ID :='00000004'O;
+		const Oct4 mp_TS_Ifc_ID :='00000001'O;
+		const Oct4 mp_TS_Ifc_ID2:='00000002'O;
+		const Oct2 mp_TS_RouterChk := '0000'O;
+		const Oct4 mp_TS_Area :='00000000'O;
+		const Oct1 mp_TS_Pri  :='02'O;
+		const Oct2 mp_TS_RouterChk0 :='f138'O;
+		const Oct2 mp_TS_RouterChk1 :='ec1f'O;
+		const Oct2 mp_TS_RouterChk2 :='9a75'O;
+		const Oct2 mp_TS_LinkChk1 :='c333'O;
+		const Oct2 mp_TS_PrefixChk1 :='5ace'O;
+		const Oct2 mp_TS_PrefixChk2 :='68bd'O;
+		//const Oct16 mp_TS_Link_Local :='FE800000000000000290f5fffe3d3d76'O;
+		const Oct16 mp_TS_Link_Local :='FE800000000000000250FCFFFE4A2222'O;
+	}
+	
+	group group_const
+	{
+		const Oct1 con_ospf_ver3 :='03'O;
+		const Oct1 con_ospf_ver2 :='02'O;
+		const Oct1 con_ospf_type_hello :='01'O;
+		const Oct1 con_ospf_type_ddp :='02'O;
+		const Oct1 con_ospf_type_LSR :='03'O;
+		const Oct1 con_ospf_type_LSU :='04'O;
+		const Oct1 con_ospf_type_ACK :='05'O;
+		const Oct2 con_ospf_hello_length1 :='0024'O;
+		const Oct2 con_ospf_hello_length2 :='0028'O;	
+		const Oct2 con_ospf_hello_length3 :='001c'O;
+		const Oct2 con_ospf_length4 :='0034'O;
+		
+		const Oct2 con_Hello_interval :='000a'O;
+		const Oct2 con_Dead_interval :='0028'O;
+		const integer con_InactTM :=40;
+		const integer con_HelloTM :=11;
+
+		const Oct1 con_ZERO1 :='00'O;
+		const Oct2 con_ZERO2 :='0000'O;			
+		const Oct4 con_ZERO4 :='00000000'O;
+		const Oct1 con_Pri0  :='00'O;
+		const Oct1 con_Pri1  :='01'O;
+		const Oct1 con_Pri2  :='02'O;
+		const Oct1 con_Pri3  :='03'O;
+		const Oct2 con_MTU1500 :='0500'O;
+		const Bit13 con_bit13zero :='0000000000000'B;
+		const Oct2 con_Ltype :='0008'O;
+		const Oct2 con_Ptype :='2009'O;
+		const Oct2 con_Rtype :='2001'O;
+		const Oct2 con_Utype :='200a'O;
+		const Oct2 con_Ntype :='2002'O;
+		const Oct4 con_Seq1:='000009b6'O;
+		const Oct4 con_Seq2:='000009b7'O;
+		const Oct4 con_Seq3:='000009b8'O;	
+		const Oct1 con_PrefixLen1 := '40'O;
+		const Oct1 con_PrefixOpt1 := '00'O;
+		const integer con_RtxTM :=5;
+		const Oct4 con_LS_MAXSN :='7FFFFFFF'O;
+		const Oct4 con_LSSeq1 :='80000001'O;
+		const Oct4 con_LSSeq2 :='80000002'O;
+		const Oct4 con_LSSeq3 :='80000003'O;
+		const Oct2 con_Age1 :='03e8'O;
+
+
+	}
+	
+	
+	const integer HalfInactTM :=20;
+	const integer AliveTM :=25;
+	const integer AliveTM2 :=10;
+	const integer LSAageTM :=1;
+	const integer LSAageTM2 :=3;
+	const integer LSAageTM3 :=2;	
+	const integer hlcount :=3;
+	const integer tmcount :=3;
+	const integer othercount :=3;
+	const integer a :=0;
+	const integer b :=0;
+	const integer c :=0;
+	const integer len1 :=0;
+	const integer len2 :=0;
+	const integer len3 :=0;
+	const integer len4 :=0;
+	const Oct3 IUT_Opt2	:='000013'O;
+	
+	const Oct4 Area0 :='00000000'O;
+	const Oct4 Area1 :='00000001'O;
+
+	const Oct2 ZERO2 :='0000'O;
+	const Oct3 ZERO3 :='000000'O;
+
+	const Oct2 OverAge1:='0e11'O;
+	const Oct2 MaxAgeDiff:='0384'O; 
+	const Oct2 MinLSArrival:='0003'O; 
+	const Oct2 MaxAge:='0e10'O; 
+
+	
+	const Oct2 IAPtype :='2003'O;
+
+	
+	const Oct2 TS_RouterChk_maxseq  :='F519'O;
+	
+	const Oct8 Prefix2 := '3FFE3211000A0002'O;
+	const Oct2 iutAge :='0000'O;
+	const Oct2 iutAge2 :='0000'O;
+	const Oct2 iutLSseq2 :='0000'O;
+	const Oct2 Age2 :='03e7'O;
+	const Oct2 ok :='0000'O;
+	const Oct2 iutLSchk :='0000'O;
+	const Oct2 iutLSchk2 :='0000'O;
+	
+
+	type port MyPortTypeAsync message {
+		inout all
+	}
+	
+	type component SystemComponent {
+		port MyPortTypeAsync SystemPort1;
+	}
+                         
+	type component MyTestComponentAsync {
+		timer myTimer :=con_HelloTM;
+		port MyPortTypeAsync MyPortAsync
+	}
+	
+	type record t_HDR{
+		Oct1 Ver,	
+		Oct1 Type,	
+		Oct2 Len,
+		Oct4 RID,
+		Oct4 AID,	
+		Oct2 Chk,	
+		Oct1 Inst,	
+		Oct1 Zero	
+	}
+	type record t_LSAHDR{
+		Oct2 Age,
+		Oct2 Type,
+		Oct4 ID,
+		Oct4 AdvR,
+		Oct4 Seq,
+		Oct2 Chk,
+		Oct2 Len
+	}
+	type record t_HLO{
+		t_HDR Hdr,
+		Oct4 Ifc,	
+		Oct1 Pri,
+		Oct3 Opt,	
+		Oct2 Hint,	
+		Oct2 Dint,			
+		Oct4 DR,	
+		Oct4 BDR
+	}
+	
+	type record t_HLO2{		
+		Oct1 Ver,	
+		Oct1 Type,	
+		Oct2 Len,
+		Oct4 RID,
+		Oct4 AID,	
+		Oct2 Chk,	
+		Oct1 Inst,	
+		Oct1 Zero,	
+		Oct4 Ifc,	
+		Oct1 Pri,
+		Oct3 Opt,	
+		Oct2 Hint,	
+		Oct2 Dint,			
+		Oct4 DR,	
+		Oct4 BDR
+	}
+	type record t_DDP0{
+		t_HDR Hdr,	
+		Oct1 Zero1,
+		Oct3 Opt,	
+		Oct2 MTU,	
+		Bit13 Pad,			
+		Bit3 Ms,
+		Oct4 Seq
+	}
+	type record t_DDP3{
+		t_HDR Hdr,	
+		Oct1 Zero,
+		Oct3 Opt,	
+		Oct2 MTU,	
+		Bit13 Pad,			
+		Bit3 Ms,
+		Oct4 Seq,
+		t_LSAHDR LSA1,
+		t_LSAHDR LSA2,
+		t_LSAHDR LSA3
+	}	
+	
+	type record  t_LSARef{
+		Oct2 Zero,
+		Oct2 Type,
+		Oct4 ID,
+		Oct4 AdvR
+	}
+	
+	type record  t_LSR3{		
+		t_HDR Hdr,
+		t_LSARef LSA1,	
+		t_LSARef LSA2,
+		t_LSARef LSA3
+	}	
+	
+	
+	type record t_RLSA0{
+		t_LSAHDR  Hdr,
+		Oct1 Flag,
+		Oct3 Opt
+	}
+	type record t_RLSA1{
+		t_LSAHDR  Hdr,
+		Oct1 Flag,
+		Oct3 Opt,
+		t_Link Link
+	}
+	type record t_Link{
+		Oct1 Type,
+		Oct1 Zero,
+		Oct2 Metric,
+		Oct4 ID,
+		Oct4 NIID,
+		Oct4 NRID
+	}
+	type record t_LLSA{
+		t_LSAHDR Hdr,
+		Oct1 Pri,
+		Oct3 Opt,
+		Oct16 Local,
+		Oct4 PNum ,
+		Oct1 PLen,
+		Oct1  POpt ,
+		Oct2 Zero,
+		Oct8 Prefix
+	}	
+	type record t_LSU3_R0L1P1{
+		t_HDR  Hdr,
+		Oct4 Num,
+		t_LLSA LSA1,
+		t_RLSA0 LSA2,		
+		t_PLSA LSA3
+	}	
+	type record t_LSU3_R1N1P1{
+		t_HDR  Hdr,
+		Oct4 Num,
+		t_RLSA1 LSA1,
+		t_NLSA LSA2,		
+		t_PLSA LSA3
+	}		
+	type record t_LSU4_R1N1P2{
+		t_HDR  Hdr,
+		Oct4 Num,
+		t_RLSA1 LSA1,
+		t_NLSA LSA2,		
+		t_PLSA LSA3,
+		t_PLSA LSA4
+	}	
+	type record t_LSU4_R1N1P0P1{
+		t_HDR  Hdr,
+		Oct4 Num,
+		t_RLSA1 LSA1,
+		t_NLSA LSA2,		
+		t_PLSA LSA3,
+		t_PLSA0 LSA4
+	}	
+	type record t_LSU2_R1P1{
+		t_HDR  Hdr,
+		Oct4 Num,
+		t_RLSA1 LSA1,		
+		t_PLSA LSA2
+	}	
+	type record t_PLSA{
+		t_LSAHDR Hdr,
+		Oct2 Num,
+		Oct2 Type,
+		Oct4 LSID,
+		Oct4 AdvR ,
+		Oct1 PLen,
+		Oct1  POpt ,
+		Oct2 Metric,
+		Oct8 Prefix
+	}
+	type record t_PLSA0{
+		t_LSAHDR  Hdr,
+		Oct2 Num,
+		Oct2 Type,
+		Oct4 LSID,
+		Oct4 AdvR
+	}
+	type record t_NLSA{
+		t_LSAHDR Hdr,
+		Oct1 Zero,
+		Oct3 Opt,
+		Oct4 R1,
+		Oct4 R2
+	}	
+	type record t_Ack1{
+		t_HDR Hdr,
+		t_LSAHDR LSA1
+	}
+	type record t_Ack3{
+		t_HDR Hdr,
+		t_LSAHDR LSA1,
+		t_LSAHDR LSA2,
+		t_LSAHDR LSA3
+	}
+	type record t_Ack4{
+		t_HDR Hdr,
+		t_LSAHDR LSA1,
+		t_LSAHDR LSA2,
+		t_LSAHDR LSA3,
+		t_LSAHDR LSA4
+	}	
+	type record  t_HL1{		
+		t_HDR Hdr,
+		Oct4 Ifc,	
+		Oct1 Pri,
+		Oct3 Opt,	
+		Oct2 Hint,	
+		Oct2 Dint,			
+		Oct4 DR,	
+		Oct4 BDR,
+		Oct4 Nbr
+	}
+	
+	type record t_LSU1_R0{
+		t_HDR Hdr,
+		Oct4 Num,	
+		t_RLSA0 LSA1
+	}
+	
+	type record ritePkt{
+		Oct1 Ver,
+		Oct1 Type
+	}
+	template t_HDR IUT_hdr(Oct1 par_type,Oct2 par_len,Oct4 par_rid):=
+	{
+		Ver :=con_ospf_ver3,		
+		Type :=par_type,			
+		Len :=par_len,			
+		RID :=par_rid,
+		AID :=mp_IUT_Area,
+		Chk :=?,
+		Inst :=con_ZERO1,
+		Zero :=con_ZERO1	
+	}
+	
+	template t_HDR TS_hdr(Oct1 par_type,Oct2 par_len,Oct4 par_rid):=
+	{
+		Ver :=con_ospf_ver3,		
+		Type :=par_type,			
+		Len :=par_len,			
+		RID :=par_rid,
+		AID :=mp_TS_Area,
+		Chk :=mp_TS_RouterChk,
+		Inst :=con_ZERO1,
+		Zero :=con_ZERO1	
+	}
+	template t_LSAHDR IUT_LSAHDR(Oct2 par_type,Oct4 par_advr):=
+	{
+		 Age :=?,
+		 Type :=par_type,
+		  ID :=?,
+		  AdvR :=par_advr,
+		  Seq :=?,
+		  Chk :=?,
+		  Len :=?
+	}
+	template t_LSAHDR IUT_LSAHDR2(Oct2 par_age,Oct2 par_type,Oct4 par_id,Oct4 par_seq,Oct2 par_chk,Oct2 par_len):=
+	{
+		 Age :=par_age,
+		 Type :=par_type,
+		  ID :=par_id,
+		  AdvR :=mp_IUT_RID,
+		  Seq :=par_seq,
+		  Chk :=par_chk,
+		  Len :=par_len
+	}
+	template t_LSAHDR TS_LSAHDR(Oct2 par_type,Oct4 par_id,Oct4 par_seq,Oct2 par_chk,Oct2 par_len):=
+	{
+		 Age :=con_Age1,
+		 Type :=par_type,
+		  ID :=par_id,
+		  AdvR :=mp_TS_RID,
+		  Seq :=par_seq,
+		  Chk :=par_chk,
+		  Len :=par_len
+	}	
+	template t_LSAHDR TS_LSAHDR2(Oct2 par_type,Oct2 par_chk):=
+	{
+		 Age :=?,
+		 Type :=par_type,
+		  ID :=?,
+		  AdvR :=mp_TS_RID,
+		  Seq :=?,
+		  Chk :=par_chk,
+		  Len :=?
+	}	
+	template t_LSAHDR TS_LSAHDR3(Oct2 par_type,Oct4 par_id,Oct4 par_seq ,Oct2 par_chk,Oct2 par_len):=
+	{
+		 Age :=?,
+		 Type :=par_type,
+		  ID :=par_id,
+		  AdvR :=mp_TS_RID,
+		  Seq :=par_seq,
+		  Chk :=par_chk,
+		  Len :=par_len
+	}		
+	template t_HLO TS_HLO(Oct3 par_opt,Oct2 par_hint,Oct2 par_dint):=
+	{
+		Hdr :=TS_hdr(con_ospf_type_hello,con_ospf_hello_length1,mp_TS_RID),
+		Ifc :=mp_TS_Ifc_ID,
+		Pri :=mp_TS_Pri,
+		Opt :=par_opt,
+		Hint :=par_hint,
+		Dint :=par_dint,
+		DR :=mp_TS_RID,
+		BDR :=con_ZERO4
+	}		
+	template t_HLO TS_HLO_D2_05:=
+	{
+		Hdr :=TS_hdr(con_ospf_type_hello,con_ospf_hello_length1,mp_TS_RID),
+		Ifc :=mp_TS_Ifc_ID,
+		Pri :=mp_TS_Pri,
+		Opt :=mp_IUT_Opt,
+		Hint :=con_Hello_interval,
+		Dint :=con_Dead_interval,
+		DR :=mp_IUT_RID,
+		BDR :=mp_TS_RID
+	}		
+	template t_HLO2 TS_HLO2(Oct2 par_len,Oct1 par_ver,Oct4 par_aid):=
+	{
+		Ver :=par_ver,		
+		Type :=con_ospf_type_hello,			
+		Len :=par_len,			
+		RID :=mp_TS_RID,			
+		AID :=par_aid,
+		Chk :=mp_TS_RouterChk,
+		Inst :=con_ZERO1,
+		Zero :=con_ZERO1,
+		Ifc :=mp_TS_Ifc_ID,
+		Pri :=mp_TS_Pri,
+		Opt :=mp_IUT_Opt,
+		Hint :=con_Hello_interval,
+		Dint :=con_Dead_interval,
+		DR :=mp_TS_RID,
+		BDR :=con_ZERO4
+	}	
+		template t_HLO2 TS_HLO3(Oct1 par_inst):=
+	{
+		Ver :=con_ospf_ver3,		
+		Type :=con_ospf_type_hello,			
+		Len :=con_ospf_hello_length1,			
+		RID :=mp_TS_RID,			
+		AID :=mp_TS_Area,
+		Chk :=mp_TS_RouterChk,
+		Inst :=par_inst,
+		Zero :=con_ZERO1,
+		Ifc :=mp_TS_Ifc_ID,
+		Pri :=mp_TS_Pri,
+		Opt :=mp_IUT_Opt,
+		Hint :=con_Hello_interval,
+		Dint :=con_Dead_interval,
+		DR :=mp_TS_RID,
+		BDR :=con_ZERO4
+	}	
+	template t_HLO IUT_HLO(Oct4 par_dr,Oct4 par_bdr):=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_hello,con_ospf_hello_length1,mp_IUT_RID),
+		Ifc :=mp_IUT_Ifc_ID,
+		Pri :=mp_IUT_Pri,
+		Opt :=mp_IUT_Opt,
+		Hint :=con_Hello_interval,
+		Dint :=con_Dead_interval,
+		DR :=par_dr,
+		BDR :=par_bdr
+	}
+
+	template t_HL1 IUT_HL1(Oct4 par_dr,Oct4 par_bdr):=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_hello,con_ospf_hello_length2,mp_IUT_RID),
+		Ifc :=mp_IUT_Ifc_ID,
+		Pri :=mp_IUT_Pri,
+		Opt :=mp_IUT_Opt,
+		Hint :=con_Hello_interval,
+		Dint :=con_Dead_interval,
+		DR :=par_dr,
+		BDR :=par_bdr,
+		Nbr :=mp_TS_RID
+	}	
+
+	template t_HL1 IUT_HL1_D0_03(Oct4 par_dr,Oct4 par_bdr,Oct4 par_nbr):=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_hello,con_ospf_hello_length2,mp_IUT_RID),
+		Ifc :=mp_IUT_Ifc_ID,
+		Pri :=?,
+		Opt :=?,
+		Hint :=con_Hello_interval,
+		Dint :=con_Dead_interval,
+		DR :=par_dr,
+		BDR :=par_bdr,
+		Nbr :=par_nbr
+	}	
+
+	template t_HL1 TS_HL1(Oct4 par_dr,Oct4 par_bdr,Oct1 priid):=
+	{
+		Hdr :=TS_hdr(con_ospf_type_hello,con_ospf_hello_length2,mp_TS_RID),
+		Ifc :=mp_TS_Ifc_ID,
+		Pri :=priid,
+		Opt :=mp_IUT_Opt,
+		Hint :=con_Hello_interval,
+		Dint :=con_Dead_interval,
+		DR :=par_dr,
+		BDR :=par_bdr,
+		Nbr :=mp_IUT_RID
+	}
+	
+	template t_HL1 TS_HL1_D0_03(Oct4 par_dr,Oct4 par_bdr,Oct1 priid):=
+	{
+		Hdr :=TS_hdr(con_ospf_type_hello,con_ospf_hello_length2,mp_TS_RID2),
+		Ifc :=mp_TS_Ifc_ID,
+		Pri :=priid,
+		Opt :=mp_IUT_Opt,
+		Hint :=con_Hello_interval,
+		Dint :=con_Dead_interval,
+		DR :=par_dr,
+		BDR :=par_bdr,
+		Nbr :=mp_IUT_RID
+	}
+
+	template t_DDP0 IUT_DDP0_1_Filter_wait(Bit3 par_Ms):=
+		{
+		Hdr :=IUT_hdr(con_ospf_type_ddp,con_ospf_hello_length3,mp_IUT_RID),
+		Zero1 :=?,
+		Opt :=?,	
+		MTU :=?,	
+		Pad :=?,			
+		Ms :=par_Ms,
+		Seq :=?
+	}
+	template t_DDP0 IUT_DDP0(Bit3 par_ims,Oct4 par_seq):=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_ddp,con_ospf_hello_length3,mp_IUT_RID),
+		Zero1 :=?,
+		Opt :=?,	
+		MTU :=?,	
+		Pad :=?,			
+		Ms :=par_ims,
+		Seq :=par_seq
+	}
+
+	template t_DDP0 TS_DDP0(Bit3 par_Ms,Oct4 par_seq,Oct4 par_ts_rid):=
+		{
+		Hdr :=TS_hdr(con_ospf_type_ddp,con_ospf_hello_length3,par_ts_rid),
+		Zero1 :=con_ZERO1,
+		Opt :=mp_IUT_Opt,	
+		MTU :=con_MTU1500,	
+		Pad :=con_bit13zero,			
+		Ms :=par_Ms,
+		Seq :=par_seq
+	}	
+	template t_DDP0 TS_DDP0_SNM_3(Bit3 par_Ms,Oct4 par_seq,Oct4 par_ts_rid):=
+		{
+		Hdr :=TS_hdr(con_ospf_type_ddp,con_ospf_hello_length3,par_ts_rid),
+		Zero1 :=con_ZERO1,
+		Opt :='000011'O,	
+		MTU :=con_MTU1500,	
+		Pad :=con_bit13zero,			
+		Ms :=par_Ms,
+		Seq :=par_seq
+	}		
+	template t_DDP3 TS_DDP3(Oct2 par_lsatype):=
+	{
+		Hdr :=TS_hdr('02'O,'0058'O,mp_TS_RID),	
+		Zero :=con_ZERO1,
+		Opt :=mp_IUT_Opt,	
+		MTU :=con_MTU1500,	
+		Pad :='0000000000000'B,			
+		Ms :='001'B,
+		Seq :=con_Seq2,
+		LSA1 :=TS_LSAHDR(con_Ltype,mp_TS_Ifc_ID,con_LSSeq1,mp_TS_LinkChk1,'0038'O),
+		LSA2 :=TS_LSAHDR(par_lsatype,con_ZERO4,con_LSSeq1,mp_TS_RouterChk0,'0018'O),
+		LSA3 :=TS_LSAHDR(con_Ptype,con_ZERO4,con_LSSeq1,mp_TS_PrefixChk1,'002c'O)
+	}		
+	template t_DDP3 IUT_DDP3(Oct4 par_seq):=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_ddp,'0058'O,mp_IUT_RID),	
+		Zero :=?,
+		Opt :=?,	
+		MTU :=?,	
+		Pad :=?,			
+		Ms :=?,
+		Seq :=par_seq,
+		LSA1 :=IUT_LSAHDR(con_Ltype,mp_IUT_RID),
+		LSA2 :=IUT_LSAHDR(con_Rtype,mp_IUT_RID),
+		LSA3 :=IUT_LSAHDR(con_Ptype,mp_IUT_RID)
+	}	
+	
+
+	template t_LSARef LSARef(Oct2 par_type,Oct4 par_id,Oct4 par_adv):=
+	{
+		Zero :=con_ZERO2,
+		Type :=par_type,
+		ID :=par_id,
+		AdvR :=par_adv
+	}
+	
+	template t_LSR3 TS_LSR3(Oct4 par_rid,Oct4 par_lid,Oct4 par_pid):=
+	{
+		Hdr :=TS_hdr(con_ospf_type_LSR,con_ospf_length4,mp_TS_RID),
+		LSA1 :=LSARef(con_Ltype,par_rid,mp_IUT_RID),
+		LSA2 :=LSARef(con_Rtype,par_lid,mp_IUT_RID),
+		LSA3 :=LSARef(con_Ptype,par_pid,mp_IUT_RID)
+	}
+	template t_LSR3 IUT_LSR3:=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_LSR,con_ospf_length4,mp_IUT_RID),
+		LSA1 :=LSARef(con_Ltype,mp_TS_Ifc_ID,mp_TS_RID),
+		LSA2 :=LSARef(con_Rtype,con_ZERO4,mp_TS_RID),
+		LSA3 :=LSARef(con_Ptype,con_ZERO4,mp_TS_RID)
+	}
+	template t_RLSA0 IUT_RLSA0:=
+	{
+		Hdr :=IUT_LSAHDR(con_Rtype,mp_IUT_RID),
+		Flag :=?,
+		Opt :=?
+	}
+	template t_RLSA0 TS_RLSA0:=
+	{
+		Hdr :=TS_LSAHDR(con_Rtype,con_ZERO4,con_LSSeq1,mp_TS_RouterChk0,'0018'O),
+		Flag :=con_ZERO1,
+		Opt :=mp_IUT_Opt
+	}
+		template t_RLSA0 TS_RLSA0_age:=
+	{
+		Hdr :=TS_LSAHDR3(con_Rtype,con_ZERO4,con_LSSeq1,mp_TS_RouterChk0,'0018'O),
+		Flag :=con_ZERO1,
+		Opt :=mp_IUT_Opt
+	}
+	template t_Link Link2(Oct4 par_self_ifc_id,Oct4 par_dr_ifc_id,Oct4 par_dr_id):=
+	{
+		Type :='02'O,
+		Zero :=con_ZERO1,
+		Metric :='0001'O,
+		ID :=par_self_ifc_id,
+		NIID :=par_dr_ifc_id,
+		NRID :=par_dr_id
+	}	
+	template t_RLSA1 IUT_RLSA1(Oct4 par_dr_ifc_id,Oct4 par_dr_id):=
+	{
+		Hdr :=IUT_LSAHDR(con_Rtype,mp_IUT_RID),
+		Flag :=?,
+		Opt :=?,
+		Link :=Link2(mp_IUT_Ifc_ID,par_dr_ifc_id,par_dr_id)
+	}
+	template t_LLSA IUT_LLSA:=
+	{
+		Hdr :=IUT_LSAHDR(con_Ltype,mp_IUT_RID),
+		Pri :=?,
+		Opt :=?	,
+		//Local :=mp_IUT_Link_Local,
+		Local :=?,
+		PNum :='00000001'O,
+		PLen :=con_PrefixLen1,
+		POpt :=con_PrefixOpt1,
+		Zero :=con_ZERO2,
+		Prefix :=mp_IUT_Prefix1
+	}
+	template t_LLSA TS_LLSA:=
+	{
+		Hdr :=TS_LSAHDR(con_Ltype,mp_TS_Ifc_ID,con_LSSeq1,mp_TS_LinkChk1,'0038'O),
+		Pri :=con_Pri1,
+		Opt :=mp_IUT_Opt	,
+		//Local :=mp_IUT_Link_Local,
+		Local :=mp_TS_Link_Local,
+		PNum :='00000001'O,
+		PLen :=con_PrefixLen1,
+		POpt :=con_PrefixOpt1,
+		Zero :=con_ZERO2,
+		Prefix :=mp_IUT_Prefix1
+	}
+		template t_LLSA TS_LLSA_age:=
+	{
+		Hdr :=TS_LSAHDR3(con_Ltype,mp_TS_Ifc_ID,con_LSSeq1,mp_TS_LinkChk1,'0038'O),
+		Pri :=con_Pri1,
+		Opt :=mp_IUT_Opt	,
+		//Local :=mp_IUT_Link_Local,
+		Local :=mp_TS_Link_Local,
+		PNum :='00000001'O,
+		PLen :=con_PrefixLen1,
+		POpt :=con_PrefixOpt1,
+		Zero :=con_ZERO2,
+		Prefix :=mp_IUT_Prefix1
+	}
+	template t_NLSA IUT_NLSA:=
+	{
+		Hdr :=IUT_LSAHDR(con_Ntype,mp_IUT_RID),
+		Zero :=con_ZERO4,
+		Opt :=?,
+		R1 :=mp_IUT_RID,
+		R2 :=mp_TS_RID		
+	}
+	template t_PLSA0 IUT_PLSA0:=
+	{
+		Hdr :=IUT_LSAHDR(con_Ptype,mp_IUT_RID),
+		Num :='00000000'O,
+		Type :=con_Rtype,
+		LSID :=con_ZERO4,
+		AdvR :=mp_IUT_RID
+	}
+	
+
+
+	template t_PLSA IUT_PLSA2:=
+	{
+		Hdr :=IUT_LSAHDR(con_Ptype,mp_IUT_RID),
+		Num :='0001'O,
+		Type :=con_Ntype,
+		LSID :=?,
+		AdvR :=mp_IUT_RID,
+		PLen :=con_PrefixLen1,
+		POpt :=con_PrefixOpt1,
+		Metric :=?,
+		Prefix :=mp_IUT_Prefix1
+	}	
+	template t_PLSA IUT_PLSA1:=
+	{
+		Hdr :=IUT_LSAHDR(con_Ptype,mp_IUT_RID),
+		Num :='0001'O,
+		Type :=con_Rtype,
+		LSID :=con_ZERO4,
+		AdvR :=mp_IUT_RID,
+		PLen :=con_PrefixLen1,
+		POpt :=con_PrefixOpt1,
+		Metric :='0001'O,
+		Prefix :=mp_IUT_Prefix1
+	}		
+		template t_PLSA TS_PLSA1:=
+	{
+		Hdr :=TS_LSAHDR(con_Ptype,con_ZERO4,con_LSSeq1,mp_TS_PrefixChk1,'002c'O),
+		Num :='0001'O,
+		Type :=con_Rtype,
+		LSID :=con_ZERO4,
+		AdvR :=mp_TS_RID,
+		PLen :=con_PrefixLen1,
+		POpt :=con_PrefixOpt1,
+		Metric :='0001'O,
+		Prefix :=mp_IUT_Prefix1
+	}	
+			template t_PLSA TS_PLSA1_age:=
+	{
+		Hdr :=TS_LSAHDR3(con_Ptype,con_ZERO4,con_LSSeq1,mp_TS_PrefixChk1,'002c'O),
+		Num :='0001'O,
+		Type :=con_Rtype,
+		LSID :=con_ZERO4,
+		AdvR :=mp_TS_RID,
+		PLen :=con_PrefixLen1,
+		POpt :=con_PrefixOpt1,
+		Metric :='0001'O,
+		Prefix :=mp_IUT_Prefix1
+	}
+	template t_LSU2_R1P1 IUT_LSU2_R1P1:=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_LSU,'0068'O,mp_IUT_RID),
+		Num :='00000002'O,
+		LSA1 :=IUT_RLSA1(mp_TS_Ifc_ID,mp_TS_RID),
+		LSA2 :=IUT_PLSA1		
+	}
+	template t_LSU3_R0L1P1 IUT_LSU3_R0L1P1:=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_LSU,'0090'O,mp_IUT_RID),
+		Num :='00000003'O,
+		LSA1 :=IUT_LLSA,
+		LSA2 :=IUT_RLSA0,
+		LSA3 :=IUT_PLSA1
+	}
+	template t_LSU3_R0L1P1 IUT_LSU3_R0L1P1_TS:=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_LSU,'0090'O,mp_IUT_RID),
+		Num :='00000003'O,
+		LSA1 :=TS_LLSA_age,
+		LSA2 :=TS_RLSA0_age,
+		LSA3 :=TS_PLSA1_age
+	}
+	template t_LSU3_R1N1P1 IUT_LSU3_R1N1P1:=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_LSU,'0088'O,mp_IUT_RID),
+		Num :='00000003'O,
+		LSA1 :=IUT_RLSA1(mp_IUT_Ifc_ID,mp_IUT_RID),
+		LSA2 :=IUT_NLSA,
+		LSA3 :=IUT_PLSA2
+	}	
+	template t_LSU3_R0L1P1 TS_LSU3_R0L1P1:=
+	{
+		Hdr :=TS_hdr(con_ospf_type_LSU,'0090'O,mp_TS_RID),
+		Num :='00000003'O,
+		LSA1 :=TS_LLSA,
+		LSA2 :=TS_RLSA0,
+		LSA3 :=TS_PLSA1
+	}	
+	template t_LSU4_R1N1P2 IUT_LSU4_R1N1P2:=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_LSU,'00b4'O,mp_IUT_RID),
+		Num :='00000004'O,
+		LSA1 :=IUT_RLSA1(mp_IUT_Ifc_ID,mp_IUT_RID),
+		LSA2 :=IUT_NLSA,
+		LSA3 :=IUT_PLSA2,
+		LSA4 :=IUT_PLSA1
+	}
+	template t_LSU4_R1N1P0P1 IUT_LSU4_R1N1P0P1:=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_LSU,'00a8'O,mp_IUT_RID),
+		Num :='00000004'O,
+		LSA1 :=IUT_RLSA1(mp_IUT_Ifc_ID,mp_IUT_RID),
+		LSA2 :=IUT_NLSA,
+		LSA3 :=IUT_PLSA2,
+		LSA4 :=IUT_PLSA0
+	}	
+	template t_Ack1 TS_Ack1(Oct2 par_type,Oct2 par_age,Oct4 par_id,Oct4 par_seq,Oct2 par_chk,Oct2 par_len):=
+	{
+		Hdr :=TS_hdr(con_ospf_type_ACK,'0024'O,mp_TS_RID),
+		LSA1 :=IUT_LSAHDR2(par_age,par_type,par_id,par_seq,par_chk,par_len)
+	}	
+	template t_Ack3 TS_Ack3(Oct2 par_type1,Oct2 par_type2,Oct2 par_type3,Oct2 par_age1,Oct2 par_age2,Oct2 par_age3,Oct4 par_id1,Oct4 par_id2,Oct4 par_id3,Oct4 par_seq1,Oct4 par_seq2,Oct4 par_seq3,Oct2 par_chk1,Oct2 par_chk2,Oct2 par_chk3,Oct2 par_len1,Oct2 par_len2,Oct2 par_len3):=
+	{
+		Hdr :=TS_hdr(con_ospf_type_ACK,'004c'O,mp_TS_RID),
+		LSA1 :=IUT_LSAHDR2(par_age1,par_type1,par_id1,par_seq1,par_chk1,par_len1),
+		LSA2 :=IUT_LSAHDR2(par_age2,par_type1,par_id2,par_seq2,par_chk2,par_len2),
+		LSA3 :=IUT_LSAHDR2(par_age3,par_type3,par_id3,par_seq3,par_chk3,par_len3)
+	}
+	template t_Ack4 TS_Ack4(Oct2 par_type1,Oct2 par_type2,Oct2 par_type3,Oct2 par_type4,Oct2 par_age1,Oct2 par_age2,Oct2 par_age3,Oct2 par_age4,Oct4 par_id1,Oct4 par_id2,Oct4 par_id3,Oct4 par_id4,Oct4 par_seq1,Oct4 par_seq2,Oct4 par_seq3,Oct4 par_seq4,Oct2 par_chk1,Oct2 par_chk2,Oct2 par_chk3,Oct2 par_chk4,Oct2 par_len1,Oct2 par_len2,Oct2 par_len3,Oct2 par_len4):=
+	{
+		Hdr :=TS_hdr(con_ospf_type_ACK,'0060'O,mp_TS_RID),
+		LSA1 :=IUT_LSAHDR2(par_age1,par_type1,par_id1,par_seq1,par_chk1,par_len1),
+		LSA2 :=IUT_LSAHDR2(par_age2,par_type1,par_id2,par_seq2,par_chk2,par_len2),
+		LSA3 :=IUT_LSAHDR2(par_age3,par_type3,par_id3,par_seq3,par_chk3,par_len3),
+		LSA3 :=IUT_LSAHDR2(par_age4,par_type4,par_id4,par_seq4,par_chk4,par_len4)
+	}
+	template t_Ack3 IUT_Ack3(Oct2 par_type1,Oct2 par_type2,Oct2 par_type3,Oct2 par_chk1,Oct2 par_chk2,Oct2 par_chk3):=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_ACK,'004c'O,mp_IUT_RID),
+		LSA1 :=TS_LSAHDR2(par_type1,par_chk1),
+		LSA2 :=TS_LSAHDR2(par_type2,par_chk2),
+		LSA3 :=TS_LSAHDR2(par_type3,par_chk3)
+	}	
+	template t_Ack3 TS_Ack3_self:=
+	{
+		Hdr :=TS_hdr(con_ospf_type_ACK,'004c'O,mp_TS_RID),
+		LSA1 :=TS_LSAHDR(con_Ltype,mp_TS_Ifc_ID,con_LSSeq1,mp_TS_LinkChk1,'0038'O),
+		LSA2 :=TS_LSAHDR(con_Rtype,con_ZERO4,con_LSSeq1,mp_TS_RouterChk0,'0018'O),
+		LSA3 :=TS_LSAHDR(con_Ptype,con_ZERO4,con_LSSeq1,mp_TS_PrefixChk1,'002c'O)
+	}	
+	template t_LSU1_R0 IUT_LSU1_R0:=
+	{
+		Hdr :=IUT_hdr(con_ospf_type_LSU,'002c'O,mp_IUT_RID),
+		Num :='00000001'O,
+		LSA1 :=IUT_RLSA0
+	}
+	
+	template ritePkt ritePkt0:=
+	{
+		Ver :='FF'O,
+		Type :='00'O
+	}
+
+	function P0() runs on MyTestComponentAsync
+	{
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+			}
+		}
+	}
+	function P_reload_manual() runs on MyTestComponentAsync
+	{
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+			}
+		}
+	}
+	
+	function P1() runs on MyTestComponentAsync
+	{
+		P0();
+		MyPortAsync.send(TS_HLO(mp_IUT_Opt,con_Hello_interval,con_Dead_interval));
+
+		myTimer.start(con_HelloTM) ;
+		var integer MyVar := 2;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				//setverdict(pass);
+			}
+			[] myTimer.timeout			
+			{
+				MyVar :=MyVar-1;
+				if(MyVar>0)
+				{
+					myTimer.start(con_HelloTM) ;
+					goto L2;
+				}
+				setverdict(fail);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}				
+		}
+	}
+	
+	function P2() runs on MyTestComponentAsync
+	{
+		P0();
+		MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri0));
+		label P2A;
+		alt{
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{}
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				label P2B;
+				alt{
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{}
+					[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+					{
+						goto P2B;
+					}
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}					
+				}
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				goto P2A;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+		}		
+	}
+
+	function P3() runs on MyTestComponentAsync
+	{
+		var t_DDP3 DDP3var;
+		var t_LSAHDR LSAHDRvar;
+		var Oct4 rid;
+		var Oct4 lid;
+		var Oct4 pid;
+		var t_LSU3_R0L1P1 lsu3var ;
+		var t_LLSA llsavar;
+		var t_RLSA0 rlsavar;		
+		var t_PLSA plsavar;
+		var Oct2 age1 ; var Oct4 seq1 ; var Oct4 id1 ;var Oct2 chk1;var Oct2 len1;
+		var Oct2 age2 ; var Oct4 seq2 ; var Oct4 id2 ;var Oct2 chk2;var Oct2 len2;
+		var Oct2 age3 ; var Oct4 seq3 ; var Oct4 id3 ;var Oct2 chk3;var Oct2 len3;
+		var Oct2 age4 ; var Oct4 seq4 ; var Oct4 id4 ;var Oct2 chk4;var Oct2 len4;
+		P2();
+		MyPortAsync.send(TS_DDP0('111'B,con_Seq1,mp_TS_RID));
+		label P3A;
+		alt{
+			[] MyPortAsync.receive(IUT_DDP3(con_Seq1))->value DDP3var
+			{
+				LSAHDRvar :=DDP3var.LSA1;lid :=LSAHDRvar.ID;
+				LSAHDRvar :=DDP3var.LSA2;rid :=LSAHDRvar.ID;
+				LSAHDRvar :=DDP3var.LSA3;pid :=LSAHDRvar.ID;
+				MyPortAsync.send(TS_LSR3(lid,rid,pid));
+				label P3B;
+				alt{
+					//[]Ack_LSU3_ROL1P1()
+					//{}
+					[]MyPortAsync.receive(IUT_LSU3_R0L1P1)->value lsu3var
+					{
+						llsavar :=lsu3var.LSA1;LSAHDRvar :=llsavar.Hdr;
+						age1 :=LSAHDRvar.Age;len1 :=LSAHDRvar.Len;id1 :=LSAHDRvar.ID;seq1 :=LSAHDRvar.Seq;chk1 :=LSAHDRvar.Chk;
+						rlsavar :=lsu3var.LSA2;LSAHDRvar :=rlsavar.Hdr;
+						age2 :=LSAHDRvar.Age;len2:=LSAHDRvar.Len;id2 :=LSAHDRvar.ID;seq2:=LSAHDRvar.Seq;chk2 :=LSAHDRvar.Chk;
+						plsavar :=lsu3var.LSA3;LSAHDRvar :=plsavar.Hdr;
+						age3 :=LSAHDRvar.Age;len3 :=LSAHDRvar.Len;id3 :=LSAHDRvar.ID;seq3 :=LSAHDRvar.Seq;chk3 :=LSAHDRvar.Chk;
+						
+						
+						MyPortAsync.send(TS_Ack3(con_Ltype,con_Rtype,con_Ptype,age1,age2,age3,id1,id2,id3,seq1,seq2,seq3,chk1,chk2,chk3,len1,len2,len3));
+						myTimer.start(con_RtxTM);
+						label Ack_LSU3_B;
+						alt{
+							[]myTimer.timeout
+							{}
+							[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+							{
+								MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+								goto Ack_LSU3_B;
+							}
+							[]MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+							{
+								MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri3));
+								goto Ack_LSU3_B;
+							}
+							[] MyPortAsync.receive(IUT_LSU3_R0L1P1)
+							{
+								MyPortAsync.send(TS_Ack3(con_Ltype,con_Rtype,con_Ptype,age1,age2,age3,id1,id2,id3,seq1,seq2,seq3,chk1,chk2,chk3,len1,len2,len3));
+								goto Ack_LSU3_B;
+							}
+							[] MyPortAsync.receive(IUT_LSU2_R1P1)
+							{
+								goto Ack_LSU3_B;
+							}
+							[]MyPortAsync.receive(IUT_LSU1_R0)
+							{
+								rlsavar :=IUT_LSU1_R0.LSA1;LSAHDRvar :=rlsavar.Hdr;
+								age4 :=LSAHDRvar.Age;len4:=LSAHDRvar.Len;id4 :=LSAHDRvar.ID;seq4:=LSAHDRvar.Seq;chk4 :=LSAHDRvar.Chk;
+								MyPortAsync.send(TS_Ack1(con_Rtype,age4,id4,seq4,chk4,len4));
+								goto Ack_LSU3_B;
+							}							
+							[] MyPortAsync.receive
+							{
+								setverdict(fail);
+								stop;
+							}
+						}
+					}
+					[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+					{
+						goto P3B;
+					}
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}						
+				}
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto P3A;
+			}
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				goto P3A;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}			
+		}
+	}
+	
+	function GetFull() runs on MyTestComponentAsync
+	{
+		var Oct2 age1 ; var Oct4 seq1 ; var Oct4 id1 ;var Oct2 chk1;var Oct2 len1;
+		var Oct2 age2 ; var Oct4 seq2 ; var Oct4 id2 ;var Oct2 chk2;var Oct2 len2;
+		var Oct2 age3 ; var Oct4 seq3 ; var Oct4 id3 ;var Oct2 chk3;var Oct2 len3;
+		var Oct2 age4 ; var Oct4 seq4 ; var Oct4 id4 ;var Oct2 chk4;var Oct2 len4;
+		var t_LSU4_R1N1P2 lsu4var ;
+		var t_LSU4_R1N1P0P1 lsu4var2 ;
+		var t_LSAHDR LSAHDRvar;
+		var t_RLSA1 rlsavar;
+		var t_NLSA nlsavar;		
+		var t_PLSA plsavar;
+		var t_PLSA plsavar2;
+		var t_PLSA0 plsa0var;
+		label AdjUpdT;
+		alt{
+			[]MyPortAsync.receive(IUT_LSU4_R1N1P2)->value lsu4var
+			{
+				rlsavar :=lsu4var.LSA1;LSAHDRvar :=rlsavar.Hdr;
+				age1 :=LSAHDRvar.Age;len1 :=LSAHDRvar.Len;id1 :=LSAHDRvar.ID;seq1 :=LSAHDRvar.Seq;chk1 :=LSAHDRvar.Chk;
+				nlsavar :=lsu4var.LSA2;LSAHDRvar :=nlsavar.Hdr;
+				age2 :=LSAHDRvar.Age;len2:=LSAHDRvar.Len;id2 :=LSAHDRvar.ID;seq2:=LSAHDRvar.Seq;chk2 :=LSAHDRvar.Chk;
+				plsavar :=lsu4var.LSA3;LSAHDRvar :=plsavar.Hdr;
+				age3 :=LSAHDRvar.Age;len3 :=LSAHDRvar.Len;id3 :=LSAHDRvar.ID;seq3 :=LSAHDRvar.Seq;chk3 :=LSAHDRvar.Chk;
+				plsavar2 :=lsu4var.LSA4;LSAHDRvar :=plsavar2.Hdr;
+				age4 :=LSAHDRvar.Age;len4 :=LSAHDRvar.Len;id4 :=LSAHDRvar.ID;seq4 :=LSAHDRvar.Seq;chk4 :=LSAHDRvar.Chk;
+				MyPortAsync.send(TS_Ack4(con_Rtype,con_Ntype,con_Ptype,con_Ptype,age1,age2,age3,age4,id1,id2,id3,id4,seq1,seq2,seq3,seq4,chk1,chk2,chk3,chk4,len1,len2,len3,len4));
+				myTimer.start(con_RtxTM);
+				label AdjUpdA;
+				alt{
+					[] myTimer.timeout			
+					{}
+					[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+					{
+						MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+						goto AdjUpdA;
+					}
+					[]MyPortAsync.receive(IUT_LSU4_R1N1P2)
+					{
+						MyPortAsync.send(TS_Ack4(con_Rtype,con_Ntype,con_Ptype,con_Ptype,age1,age2,age3,age4,id1,id2,id3,id4,seq1,seq2,seq3,seq4,chk1,chk2,chk3,chk4,len1,len2,len3,len4));
+						myTimer.start(con_RtxTM);
+						goto AdjUpdA;
+					}
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+				}
+			}
+			[]MyPortAsync.receive(IUT_LSU4_R1N1P0P1)->value lsu4var2
+			{
+				rlsavar :=lsu4var2.LSA1;LSAHDRvar :=rlsavar.Hdr;
+				age1 :=LSAHDRvar.Age;len1 :=LSAHDRvar.Len;id1 :=LSAHDRvar.ID;seq1 :=LSAHDRvar.Seq;chk1 :=LSAHDRvar.Chk;
+				nlsavar :=lsu4var2.LSA2;LSAHDRvar :=nlsavar.Hdr;
+				age2 :=LSAHDRvar.Age;len2:=LSAHDRvar.Len;id2 :=LSAHDRvar.ID;seq2:=LSAHDRvar.Seq;chk2 :=LSAHDRvar.Chk;
+				plsavar :=lsu4var2.LSA3;LSAHDRvar :=plsavar.Hdr;
+				age3 :=LSAHDRvar.Age;len3 :=LSAHDRvar.Len;id3 :=LSAHDRvar.ID;seq3 :=LSAHDRvar.Seq;chk3 :=LSAHDRvar.Chk;
+				plsa0var :=lsu4var2.LSA4;LSAHDRvar :=plsa0var.Hdr;
+				age4 :=LSAHDRvar.Age;len4 :=LSAHDRvar.Len;id4 :=LSAHDRvar.ID;seq4 :=LSAHDRvar.Seq;chk4 :=LSAHDRvar.Chk;
+				MyPortAsync.send(TS_Ack4(con_Rtype,con_Ntype,con_Ptype,con_Ptype,age1,age2,age3,age4,id1,id2,id3,id4,seq1,seq2,seq3,seq4,chk1,chk2,chk3,chk4,len1,len2,len3,len4));
+				myTimer.start(con_RtxTM);
+				label AdjUpdC;
+				alt{
+					[] myTimer.timeout			
+					{}
+					[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+					{
+						MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+						goto AdjUpdC;
+					}
+					[]MyPortAsync.receive(IUT_LSU4_R1N1P0P1)
+					{
+						MyPortAsync.send(TS_Ack4(con_Rtype,con_Ntype,con_Ptype,con_Ptype,age1,age2,age3,age4,id1,id2,id3,id4,seq1,seq2,seq3,seq4,chk1,chk2,chk3,chk4,len1,len2,len3,len4));
+						myTimer.start(con_RtxTM);
+						goto AdjUpdA;
+					}
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+				}
+			}
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				goto AdjUpdT;
+			}
+			[]MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(fail);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				goto AdjUpdT;
+			}
+			[]MyPortAsync.receive(IUT_LSU3_R1N1P1)
+			{
+				goto AdjUpdT;
+			}
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				goto AdjUpdT;
+			}
+			[]MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(fail);
+				stop;
+			}
+		}       
+	}
+	
+	function P6new() runs on MyTestComponentAsync
+	{
+
+		P3();
+		
+		MyPortAsync.send(TS_DDP3(con_Rtype));
+		label P4A;
+		alt {
+			[] MyPortAsync.receive(IUT_DDP0('000'B,con_Seq2))
+			{
+				label P4B;
+				alt{
+					[] MyPortAsync.receive(IUT_LSR3)
+					{
+						MyPortAsync.send(TS_LSU3_R0L1P1);
+						myTimer.start(con_RtxTM);
+						label P4C;
+						alt{
+							[]myTimer.timeout
+							{
+								GetFull();
+							}
+							[]MyPortAsync.receive(IUT_Ack3(con_Ltype,con_Rtype,con_Ptype,mp_TS_LinkChk1,mp_TS_RouterChk0,mp_TS_PrefixChk1))
+							{
+								GetFull();
+							}
+							[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+							{
+								MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+								goto P4C;
+							}
+							[]MyPortAsync.receive(IUT_LSU3_R0L1P1_TS)
+							{
+								MyPortAsync.send(TS_Ack3_self);
+								myTimer.start(con_RtxTM);
+								label Ack_LSU3_self_A;
+								alt {
+									[]myTimer.timeout
+									{}									
+									[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+									{
+										MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+										goto Ack_LSU3_self_A;
+									}
+									[] MyPortAsync.receive(IUT_LSU3_R0L1P1_TS)
+									{
+										MyPortAsync.send(TS_Ack3_self);
+										myTimer.start(con_RtxTM);
+										goto Ack_LSU3_self_A;
+									}
+									[] MyPortAsync.receive
+									{
+										setverdict(fail);
+										stop;
+									}
+								}
+								GetFull();
+							}
+							[] MyPortAsync.receive
+							{
+								setverdict(fail);
+								stop;
+							}
+						}
+					}
+					[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+					{
+						MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+						goto P4B;
+					}
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+				}
+			}
+			[] MyPortAsync.receive
+			{
+				MyPortAsync.send(TS_DDP3(con_Rtype));
+				goto P4A;
+			}
+		}
+	}
+	function P_IUT_TS() runs on MyTestComponentAsync
+	{
+		P0();
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri1));
+
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,mp_TS_RID))
+			{
+				//setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				goto L2;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri1));
+				goto L2;
+			}	
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L2;
+			}		
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}				
+		}
+	}
+	
+	
+	function P_IUT_0() runs on MyTestComponentAsync
+	{
+		P0();
+		MyPortAsync.send(TS_HLO(mp_IUT_Opt,con_Hello_interval,con_Dead_interval));
+
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				//setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HLO(mp_IUT_Opt,con_Hello_interval,con_Dead_interval));
+				goto L2;
+			}	
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L2;
+			}		
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}				
+		}
+	}
+
+	function P_TS_IUT() runs on MyTestComponentAsync
+	{
+		P0();
+		MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri3));
+
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+			{
+				//setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				goto L2;
+			}	
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri3));
+				goto L2;
+			}				
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L2;
+			}		
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}				
+		}
+	}
+	
+	testcase HL_PERIOD() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();
+		
+		myTimer.start(con_InactTM) ;
+		var integer MyVar := 3;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyVar :=MyVar-1;
+				if(MyVar>0)
+				{
+					goto L2;
+				}
+				setverdict(pass);
+			}
+			[] myTimer.timeout			
+			{
+				setverdict(fail);
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase HL_DEADTM() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		
+		P1();
+		myTimer.start(con_InactTM) ;
+
+		label L2; 
+		alt {
+			[] myTimer.timeout			
+			{
+				myTimer.start(20);				
+				//MyPortAsync.send(ritePkt0);//发这个包的目的不是很清楚。据王称是向参考实现发一些用于操作路由器的指令。不用管。
+				alt{
+					[]MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+					{
+						setverdict(pass);
+					}
+					[]myTimer.timeout
+					{	
+						setverdict(fail);
+					}
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					
+				}
+			}
+			[] MyPortAsync.receive
+			{
+				goto L2;
+			}
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	//TP:Test if IUT ignore option except Ebit: Opt=00003f (all the defined options, so should accept)
+	testcase HL_OPTIGN1() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();
+		                          
+		MyPortAsync.send(TS_HLO('00003F'O,con_Hello_interval,con_Dead_interval));
+		var integer hlcount := 3;
+		var integer tmcount := 3;
+		myTimer.start(con_HelloTM) ;
+
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				hlcount :=hlcount-1;
+				if(hlcount>0)
+				{
+					goto L2;
+				}
+				setverdict(fail);
+				stop;
+			}			
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] myTimer.timeout			
+			{	
+				tmcount :=tmcount-1;
+				if(tmcount>0)
+				{
+					myTimer.start(con_HelloTM) ;										
+					goto L2;
+				}
+				setverdict(fail);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	//TP:Test if IUT ignore option except Ebit, opt=ffffff, should accept
+	testcase HL_OPTIGN2() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();		
+		
+		MyPortAsync.send(TS_HLO('FFFFFF'O,con_Hello_interval,con_Dead_interval));
+
+		myTimer.start(con_HelloTM) ;
+		var integer hlcount := 3;
+		var integer tmcount := 3;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				hlcount :=hlcount-1;
+				if(hlcount>0)
+				{
+					goto L2;
+				}
+				setverdict(fail);
+				stop;
+			}			
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] myTimer.timeout			
+			{	
+				tmcount :=tmcount-1;
+				if(tmcount>0)
+				{
+					myTimer.start(con_HelloTM) ;
+					goto L2;
+				}
+				setverdict(fail);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	//TP:Test if IUT refuse not consistent E-bit;	
+	testcase HL_OPTOTH() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();		
+		
+		MyPortAsync.send(TS_HLO('000000'O,con_Hello_interval,con_Dead_interval));
+		myTimer.start(con_HelloTM) ;
+		var integer hlcount := 3;
+		var integer tmcount := 3;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				hlcount :=hlcount-1;
+				if(hlcount>0)
+				{
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}			
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(fail);
+			}
+			[] myTimer.timeout			
+			{	
+				tmcount :=tmcount-1;
+				if(tmcount>0)
+				{
+					myTimer.start(con_HelloTM) ;
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	//TP:Test if IUT refuse non-consistent HelloInterval
+	testcase HL_HLINTV() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();		
+		
+		MyPortAsync.send(TS_HLO(mp_IUT_Opt,'000b'O,con_Dead_interval));
+		myTimer.start(con_HelloTM) ;
+		var integer hlcount := 2;
+		var integer tmcount := 2;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				hlcount :=hlcount-1;
+				if(hlcount>0)
+				{
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}			
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(fail);
+			}
+			[] myTimer.timeout			
+			{	
+				tmcount :=tmcount-1;
+				if(tmcount>0)
+				{
+					myTimer.start(con_HelloTM) ;
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	//TP:Test if IUT refuse non-consistent DeadInterval
+	testcase HL_DINTV() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();		
+		
+		MyPortAsync.send(TS_HLO(mp_IUT_Opt,con_Hello_interval,'0027'O));
+		myTimer.start(con_HelloTM) ;
+		var integer hlcount := 2;
+		var integer tmcount := 2;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				hlcount :=hlcount-1;
+				if(hlcount>0)
+				{
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}			
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(fail);
+			}
+			[] myTimer.timeout			
+			{	
+				tmcount :=tmcount-1;
+				if(tmcount>0)
+				{
+					myTimer.start(con_HelloTM) ;
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	
+	//TP:Test if IUT refuse non-consistent HelloInterval
+	testcase HL_INSTANCE() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();		
+		
+		MyPortAsync.send(TS_HLO3('01'O));
+		myTimer.start(con_HelloTM) ;
+		var integer hlcount := 2;
+		var integer tmcount := 2;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				hlcount :=hlcount-1;
+				if(hlcount>0)
+				{
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}			
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(fail);
+			}
+			[] myTimer.timeout			
+			{	
+				tmcount :=tmcount-1;
+				if(tmcount>0)
+				{
+					myTimer.start(con_HelloTM) ;
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+		//TP:Test if IUT refuse non-consistent HelloInterval
+	testcase HL_PKLEN() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();		
+		
+		MyPortAsync.send(TS_HLO2('0025'O,con_ospf_ver3,mp_TS_Area));
+		myTimer.start(con_HelloTM) ;
+		var integer hlcount := 2;
+		var integer tmcount := 2;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				hlcount :=hlcount-1;
+				if(hlcount>0)
+				{
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}			
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(fail);
+			}
+			[] myTimer.timeout			
+			{	
+				tmcount :=tmcount-1;
+				if(tmcount>0)
+				{
+					myTimer.start(con_HelloTM) ;
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+			//TP:Test if IUT refuse non-consistent HelloInterval
+	testcase HL_Version() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();		
+		
+		MyPortAsync.send(TS_HLO2(con_ospf_hello_length1,'02'O,mp_TS_Area));
+		myTimer.start(con_HelloTM) ;
+		var integer hlcount := 2;
+		var integer tmcount := 2;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				hlcount :=hlcount-1;
+				if(hlcount>0)
+				{
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}			
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(fail);
+			}
+			[] myTimer.timeout			
+			{	
+				tmcount :=tmcount-1;
+				if(tmcount>0)
+				{
+					myTimer.start(con_HelloTM) ;
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	//TP:Test if IUT refuse non-consistent HelloInterval
+	testcase HL_Area() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();		
+		
+		MyPortAsync.send(TS_HLO2(con_ospf_hello_length1,con_ospf_ver3,'00000001'O));
+		myTimer.start(con_HelloTM) ;
+		var integer hlcount := 2;
+		var integer tmcount := 2;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				hlcount :=hlcount-1;
+				if(hlcount>0)
+				{
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}			
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(fail);
+			}
+			[] myTimer.timeout			
+			{	
+				tmcount :=tmcount-1;
+				if(tmcount>0)
+				{
+					myTimer.start(con_HelloTM) ;
+					goto L2;
+				}
+				setverdict(pass);
+				stop;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_00() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		
+		MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri0));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+				//stop;
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_01() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		
+		MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri1));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,mp_TS_RID))
+			{
+				setverdict(pass);
+				//stop;
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}		
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_02() 
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		
+		MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri2));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri2));
+				label L2;
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+					{
+						setverdict(pass);
+					}
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_03()
+	runs on MyTestComponentAsync 	
+	system SystemComponent {	
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		
+		MyPortAsync.send(TS_HL1_D0_03(con_ZERO4,con_ZERO4,con_Pri2));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1_D0_03(mp_IUT_RID,mp_TS_RID2,mp_TS_RID2))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1_D0_03(con_ZERO4,con_ZERO4,mp_TS_RID2))
+			{
+				MyPortAsync.send(TS_HL1_D0_03(con_ZERO4,con_ZERO4,con_Pri2));
+				goto L1;
+			}		
+
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1_D0_03(con_ZERO4,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1_D0_03(con_ZERO4,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1_D0_03(con_ZERO4,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+
+	testcase D0_04()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+
+		MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri3));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri3));
+				label L2; 
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+					{
+						setverdict(pass);
+					}	
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						goto L2;
+					}				
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_05()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		
+		MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri0));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}		
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+		}
+	
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_06()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri1));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}		
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_07()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri0));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_08()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri1));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri1));
+				label L2; 
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+					{
+						setverdict(pass);
+					}	
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_09()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri2));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri2));
+				label L2; 
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+					{
+						setverdict(pass);
+					}	
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						goto L2;
+					}		
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_10()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri3));
+				label L2; 
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+					{
+						setverdict(pass);
+					}	
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						goto L2;
+					}		
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_11()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri3));
+				label L2; 
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+					{
+						setverdict(pass);
+					}	
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_12()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_IUT_RID,con_Pri1));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,mp_TS_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_IUT_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_IUT_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_IUT_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_13()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_IUT_RID,con_Pri3));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri3));
+				label L2; 
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+					{
+						setverdict(pass);
+					}	
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_IUT_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_IUT_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_IUT_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_14()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri0));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}			
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_15()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri1));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}		
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_16()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri0));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_17()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri1));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_18()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	testcase D0_19()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri1));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,mp_TS_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_20()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri3));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri3));
+				label L2; 
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+					{
+						setverdict(pass);
+					}	
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	testcase D0_21()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri0));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_22()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri1));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri1));
+				label L2; 
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+					{
+						setverdict(pass);
+					}	
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						goto L2;
+					}
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D0_23()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_IUT_RID,con_Pri0));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	testcase D0_24()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+		MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_IUT_RID,con_Pri3));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_IUT_RID,con_Pri3));
+				label L2; 
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+					{
+						setverdict(pass);
+					}	
+					[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						goto L2;
+					}
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_IUT_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_IUT_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_IUT_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}
+			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D1_00()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_IUT_TS();
+		MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri2));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,mp_TS_RID))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	testcase D1_01()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_IUT_TS();
+		MyPortAsync.send(TS_HL1(mp_IUT_RID,mp_TS_RID,con_Pri0));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,mp_TS_RID))
+			{
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	//IUT/0IUT/0:Declare TS.Pri1 AS DR,lead to IUT/0
+	testcase D2_00()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_IUT_0();
+		MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri1));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri1));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D2_01()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_IUT_0();
+		MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri2));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,con_ZERO4,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase D2_02()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_IUT_0();
+		MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri2));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_IUT_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_TS_RID,mp_TS_RID,con_Pri2));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+
+	testcase D2_03()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_IUT_0();
+		MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri3));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,mp_TS_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+
+	testcase D2_04()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_IUT_0();
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,mp_TS_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+
+	testcase D2_05()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_IUT_0();
+		MyPortAsync.send(TS_HLO_D2_05);
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HLO_D2_05);
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HLO_D2_05);
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HLO_D2_05);
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}		
+	
+	testcase D3_00()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_TS_IUT();
+		MyPortAsync.send(TS_HLO(mp_IUT_Opt,con_Hello_interval,con_Dead_interval));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HLO_D2_05);
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HLO_D2_05);
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HLO_D2_05);
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	testcase D3_01()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_TS_IUT();
+		myTimer.start(con_InactTM) ;
+		label L1;
+		alt {
+			[] myTimer.timeout	
+			{
+				alt{
+					[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+					{
+						setverdict(pass);
+					}
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+					}
+				}
+			}
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	
+	testcase D3_02()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_TS_IUT();
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_TS_RID,mp_TS_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}		
+	
+	testcase D3_03()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_TS_IUT();
+		MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri1));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,mp_TS_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}			
+	
+	testcase D3_04()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_TS_IUT();
+		MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri3));
+		label L1;
+		alt {
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,mp_TS_RID))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,mp_TS_RID,con_Pri3));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				goto L1;
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}				
+	
+	testcase D4_00()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P_reload_manual();
+
+		var integer MyVar := 3;
+		label L2; 
+		alt {
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyVar :=MyVar-1;
+				if(MyVar>0)
+				{
+					goto L2;
+				}	
+				if(MyVar==0)
+				{
+					alt{
+						[] MyPortAsync.receive(IUT_HLO(mp_IUT_RID,con_ZERO4))
+						{
+							
+							setverdict(pass);
+						}
+						[] MyPortAsync.receive
+						{
+							setverdict(fail);
+						}	
+					}
+				}
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}				
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	testcase D4_01()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		alt{
+			[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri0))
+				label L2;
+				alt{
+					[] MyPortAsync.receive(IUT_HL1(con_ZERO4,con_ZERO4))
+					{
+						setverdict(pass);
+						stop;
+					}
+					[] MyPortAsync.receive(IUT_HLO(con_ZERO4,con_ZERO4))
+					{
+						goto L2;
+					}	
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+						stop;
+					}					
+				}
+			}
+		}	
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	testcase MSC_1()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		var t_DDP0 iutDDP0;
+		var t_DDP3 iutDDP3;
+		var Oct4 ddpseq1;
+		var Oct4 ddpseq2;
+		var integer ds1;
+		var integer ds2;
+		
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();		
+		MyPortAsync.send(TS_HL1_D0_03(con_ZERO4,con_ZERO4,con_Pri0));//TS_RID=TS2;
+		label L1;		
+		alt{
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))-> value iutDDP0
+			{
+				ddpseq1 :=iutDDP0.Seq;
+				MyPortAsync.send(TS_DDP0('010'B,ddpseq1,mp_TS_RID2));
+				label L2;
+				alt{
+					[] MyPortAsync.receive(IUT_DDP3(?))-> value iutDDP3
+					{
+						ddpseq2 :=iutDDP3.Seq;
+						ds2 :=oct2int(ddpseq2);
+						ds1 :=oct2int(ddpseq1);
+						ds1 :=ds1+1;
+						if(ds2==ds1)
+						{
+							setverdict(pass);					
+						}
+						else
+						{
+							setverdict(fail);
+						}
+					}
+					[]  MyPortAsync.receive(IUT_HL1_D0_03(mp_IUT_RID,con_ZERO4,mp_TS_RID))
+					{
+						MyPortAsync.send(TS_DDP0('010'B,ddpseq1,mp_TS_RID2));
+						goto L2;
+					}
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+					}
+				}
+			}
+			[] MyPortAsync.receive(IUT_HL1_D0_03(mp_IUT_RID,con_ZERO4,mp_TS_RID))
+			{
+				goto L1;
+			}
+			
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}
+			
+		}
+
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	testcase MSC_2()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		var t_DDP0 iutDDP0;
+		var t_DDP3 iutDDP3;
+		var Oct4 ddpseq1;
+		var Oct4 ddpseq2;
+		var integer ds1;
+		var integer ds2;
+		var integer hlcount:=2;
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P0();		
+		MyPortAsync.send(TS_HL1(con_ZERO4,con_ZERO4,con_Pri0));
+		label L1;		
+		alt{
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))-> value iutDDP0
+			{
+				ddpseq1 :=iutDDP0.Seq;
+				MyPortAsync.send(TS_DDP0('010'B,ddpseq1,mp_TS_RID));
+				label L2;
+				alt{
+					[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+					{
+						hlcount:=hlcount-1;
+						if(hlcount>0)
+						{
+							MyPortAsync.send(TS_DDP0('010'B,ddpseq1,mp_TS_RID));
+							goto L2;
+						}
+						if(hlcount==0)
+						{
+							setverdict(pass);
+						}
+					}
+					[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+					{
+						MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+						goto L2;
+					}					
+					[] MyPortAsync.receive
+					{
+						setverdict(fail);
+					}
+				}
+			}			
+			[] MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+			}	
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}
+			
+		}
+
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase SNM_0()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P3();
+		
+		MyPortAsync.send(TS_DDP0('001'B,con_Seq2,mp_TS_RID));
+		label L1;
+		alt{
+			[] MyPortAsync.receive(IUT_DDP0('000'B,con_Seq2))
+			{
+				setverdict(pass);
+			}
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase SNM_1()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P3();
+
+		MyPortAsync.send(TS_DDP0('000'B,con_Seq2,mp_TS_RID));
+		label L1;
+		alt{
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				setverdict(pass);
+			}
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase SNM_2()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P3();
+
+		MyPortAsync.send(TS_DDP0('101'B,con_Seq2,mp_TS_RID));
+		label L1;
+		alt{
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				setverdict(pass);
+			}
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	testcase SNM_3()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P3();
+
+		MyPortAsync.send(TS_DDP0_SNM_3('001'B,con_Seq2,mp_TS_RID));//Opt='000011'O
+		label L1;
+		alt{
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('111'B))
+			{
+				setverdict(pass);
+			}
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}	
+	
+	testcase SNM_4()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P3();
+
+		MyPortAsync.send(TS_DDP3(con_Utype));
+		label L1;
+		alt{
+			[] MyPortAsync.receive(IUT_DDP0_1_Filter_wait('000'B))
+			{
+				setverdict(pass);
+			}
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				goto L1;
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+				stop;
+			}			
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+	
+	testcase DUP_1()
+	runs on MyTestComponentAsync 
+	system SystemComponent {
+		map(mtc:MyPortAsync, system:SystemPort1);
+		P6new();
+		MyPortAsync.send(TS_DDP0('001'B,con_Seq2,mp_TS_RID));
+		label L1;
+		alt{
+			[]MyPortAsync.receive(IUT_HL1(mp_IUT_RID,con_ZERO4))
+			{
+				MyPortAsync.send(TS_HL1(mp_IUT_RID,con_ZERO4,con_Pri0));
+				MyPortAsync.send(TS_DDP0('001'B,con_Seq2,mp_TS_RID));
+				goto L1;
+			}
+			[] MyPortAsync.receive(IUT_DDP0('000'B,con_Seq2))
+			{
+				setverdict(pass);
+			}
+			[] MyPortAsync.receive
+			{
+				setverdict(fail);
+			}	
+		}
+		unmap(mtc:MyPortAsync, system:SystemPort1);
+	}
+}

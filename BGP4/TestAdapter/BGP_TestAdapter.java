@@ -253,17 +253,17 @@ public class BGP_TestAdapter extends TestAdapter implements TriCommunicationSA,T
 		String ipAddr = "";
 		if (tsiPortId.getPortName().equals("BGP_Interface_PortA"))
 		{
-			ipAddr = "192.168.48.129";
+			ipAddr = "2001:0:2::6";
 			tcpFlag = true;
 		}
 		else if (tsiPortId.getPortName().equals("BGP_Interface_PortB"))
 		{
-			ipAddr = "192.168.197.130";
+			ipAddr = "2001:0:3::6";
 			tcpFlag = false;
 		}
 		else if (tsiPortId.getPortName().equals("BGP_Interface_PortC"))
 		{
-			ipAddr = "192.168.201.129";
+			ipAddr = "2001:0:1::6";
 		}
 		else
 		{
