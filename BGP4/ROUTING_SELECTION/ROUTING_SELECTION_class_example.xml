@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<moduleloader>
-  <testcase Name="R_UPDATE_AS_PATH_3" Selection="true" Verdict="none" Description=""/>
-  <testadapter FileName="E:\pitsv3\PITSv3\src\testcases\BGP4\ROUTING_SELECTION\ROUTING_SELECTION_class_exampleTestAdapter.jar"/>
-</moduleloader>

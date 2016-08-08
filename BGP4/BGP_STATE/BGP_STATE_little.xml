@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<moduleloader>
-  <testcase Name="BGP_SEND_UPDATE" Selection="true" Verdict="none" Description=""/>
-  <testadapter FileName="C:\Users\wq\Desktop\PITSv3\src\testcases\BGP4\TestAdapter\BGP_TestAdapter.jar"/>
-</moduleloader>
