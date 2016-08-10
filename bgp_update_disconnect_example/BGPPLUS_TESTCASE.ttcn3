@@ -1,0 +1,462 @@
+module BGPPLUS_TESTCASE
+{
+		group BGP_CONSTANT
+		{	
+			const Oct2 	AS_Number_A	:= '0046'O;		//70  route-id
+			const Oct4 	A_IPv4		:= 'C0A83080'O;       //192.168.48.128
+		}//end group BGP_CONSTANT
+		
+		// Common string subtypes  number indicates encoding length in number of 
+		// _hex digits/chars/octets_
+		type octetstring	Oct1 		length(1);
+		type octetstring	Oct2 		length(2); 
+		type octetstring	Oct3 		length(3); 
+		type octetstring	Oct4 		length(4); 
+		type octetstring	Oct6 		length(6); 
+		type octetstring      Oct8           length(8);  
+		type octetstring      Oct13          length(13);
+		type octetstring	Oct16 	       length(16); 
+		type octetstring      Oct30          length(30);
+		type octetstring	Oct128 		length(128); 
+		//type octetstring	Oct1to128 	length(1..128); //with {encode "1 to 128 Octets"};
+			
+		group	PDU_TYPE
+		{
+			group	PDU_OPEN
+			{
+				type record BGP_OPEN
+				{
+					Oct16 MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct1	VERSION,
+					Oct2	MY_AS,
+					Oct2	HOLDTIME,
+					Oct4	ID,
+					Oct1	OPTION_LEN,	
+					Oct1    CAPACABILITY_TYPE,
+					Oct1    CAPACABILITY_LEN,
+					Oct6    CAPACABILITY_VALUE,
+					Oct1    CAPACABILITY1_TYPE,
+					Oct1    CAPACABILITY1_LEN,
+					Oct6    CAPACABILITY1_VALUE,
+					Oct1    CAPACABILITY2_TYPE,
+					Oct1    CAPACABILITY2_LEN,
+					Oct2    CAPACABILITY2_VALUE,
+					Oct1    CAPACABILITY3_TYPE,
+					Oct1    CAPACABILITY3_LEN,
+					Oct2    CAPACABILITY3_VALUE,
+					Oct1    CAPACABILITY4_TYPE,
+					Oct1    CAPACABILITY4_LEN,
+					Oct6    CAPACABILITY4_VALUE,
+					Oct1    CAPACABILITY5_TYPE,
+					Oct1    CAPACABILITY5_LEN,
+					Oct4    CAPACABILITY5_VALUE		
+				}//	end record BGP_OPEN
+				
+				type record BGP_OPEN_OPTS_KEEPALIVE
+				{
+					Oct16   MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct1	VERSION,
+					Oct2	MY_AS,
+					Oct2	HOLDTIME,
+					Oct4	ID,
+					Oct1	OPTION_LEN,	
+					Oct1    CAPACABILITY_TYPE,
+					Oct1    CAPACABILITY_LEN,
+					Oct6    CAPACABILITY_VALUE,
+					Oct1    CAPACABILITY1_TYPE,
+					Oct1    CAPACABILITY1_LEN,
+					Oct6    CAPACABILITY1_VALUE,
+					Oct1    CAPACABILITY2_TYPE,
+					Oct1    CAPACABILITY2_LEN,
+					Oct2    CAPACABILITY2_VALUE,
+					Oct1    CAPACABILITY3_TYPE,
+					Oct1    CAPACABILITY3_LEN,
+					Oct2    CAPACABILITY3_VALUE,
+					Oct1    CAPACABILITY4_TYPE,
+					Oct1    CAPACABILITY4_LEN,
+					Oct6    CAPACABILITY4_VALUE,
+					Oct1    CAPACABILITY5_TYPE,
+					Oct1    CAPACABILITY5_LEN,
+					Oct4    CAPACABILITY5_VALUE,	
+					Oct16	MARKER_KEEP,
+					Oct2	LENGTH_KEEP,
+					Oct1	TYPE_KEEP
+				}//	end record BGP_OPEN_OPTS_KEEPALIVE
+			}//end group PDU_OPEN
+						
+			group PDU_KEEPALIVE
+			{
+				type record BGP_KEEPALIVE
+				{
+					Oct16	MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE
+
+				}//	end record BGP_KEEPALIVE	
+		
+			}// end group PDU_KEEPALIVE
+			
+			group	PDU_UPDATE
+			{
+				type	record	BGP_UPDATE_SEND
+				{
+					Oct16   MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct2	UNFEASIBLE,
+					Oct2	PATHATTRIBUTE_LEN,
+					Oct16   MARKER1,
+					Oct2	LENGTH1,
+					Oct1	TYPE1,
+					Oct2	UNFEASIBLE1,
+					Oct2	PATHATTRIBUTE_LEN1,
+					Oct1    MP_REACH_NLRI_FLAG,
+					Oct1    MP_REACH_NLRI_TYPE,
+					Oct2    MP_REACH_NLRI_LEN,
+					Oct2    MP_REACH_NLRI_ADDRFAM,
+					Oct1    MP_REACH_NLRI_ADF_SUB,
+					Oct1    MP_REACH_NLRI_NEXTHOP_NUM,
+					Oct16   MP_REACH_NLRI_NEXTHOP,
+					Oct16   MP_REACH_NLRI_NEXTHOP_L,
+					Oct1    MP_REACH_NLRI_SUB_ATTA,
+					Oct1    MP_REACH_NLRI_PREFIX_LEN,
+					Oct8    MP_REACH_NLRI_PREFIX_VAL,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct2	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct4	AS_SEG_VAL,
+					Oct2	MULTI_EXIT_DISC,
+					Oct1	MULTI_EXIT_DISC_LEN,
+					Oct4	MULTI_EXIT_DISC_VAL,
+					Oct16   NEXT_UPDATE_MARKER,
+					Oct13   NEXT_UPDATE_PATHATTR						
+				}// end record 
+				type record BGP_UPDATE
+				{
+					Oct16   MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct2	UNFEASIBLE,
+					Oct2	PATHATTRIBUTE_LEN,
+					Oct16   NEXT_UPDATE_MARKER,
+					Oct13   NEXT_UPDATE_PATHATTR
+				}
+			}//end group PDU_UPDATE
+			group	PDU_NOTIFICATION
+			{
+				type	record	BGP_NOTIFICATION
+				{
+					Oct16	MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct1	ERR_CODE,
+					Oct1	ERR_SUBCODE
+				}// end record BGP_NOTIFICATION				
+			}// end group	PDU_NOTIFICATION
+		}//end group PDU_TYPE
+		
+		group	TEMPL_OPEN
+		{
+			template	BGP_OPEN	OPEN_SEND :=
+			{
+				MARKER 			       := 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH 			       := '0043'O,
+				TYPE			       := '01'O,
+				VERSION			       := '04'O,
+				MY_AS			       := AS_Number_A,
+				HOLDTIME		       := '00B4'O,	//180
+				ID			       := A_IPv4,
+				OPTION_LEN	               := '26'O,
+				CAPACABILITY_TYPE              := '02'O,
+				CAPACABILITY_LEN               := '06'O,
+				CAPACABILITY_VALUE             := '010400010001'O,
+				CAPACABILITY1_TYPE             := '02'O,
+				CAPACABILITY1_LEN              := '06'O,
+				CAPACABILITY1_VALUE            := '010400020001'O,
+				CAPACABILITY2_TYPE             := '02'O,
+				CAPACABILITY2_LEN              := '02'O,
+				CAPACABILITY2_VALUE            := '8000'O,
+				CAPACABILITY3_TYPE             := '02'O,
+				CAPACABILITY3_LEN              := '02'O,
+				CAPACABILITY3_VALUE            := '0200'O,
+				CAPACABILITY4_TYPE             := '02'O,
+				CAPACABILITY4_LEN              := '06'O,
+				CAPACABILITY4_VALUE            := '410400000046'O,  //AS_Number_A
+				CAPACABILITY5_TYPE             := '02'O,
+				CAPACABILITY5_LEN              := '04'O,
+				CAPACABILITY5_VALUE            := '40020078'O
+			};
+			
+			template	BGP_OPEN	OPEN_RECEIVE :=
+			{
+				MARKER 			:= ?,
+				LENGTH 			:= ?,
+				TYPE			:= '01'O,
+				VERSION			:= '04'O,
+				MY_AS			:= ?,
+				HOLDTIME		:= ?,
+				ID			:= ?,
+				OPTION_LEN	        := ?
+			};
+			
+			template BGP_OPEN_OPTS_KEEPALIVE           OPEN_AND_KEEPALIVE_RECEIVE :=
+			{
+				MARKER 		       := 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH 		       := '0043'O,
+				TYPE		       := '01'O,
+				VERSION		       := '04'O,
+				MY_AS		       := '1dfb'O,
+				HOLDTIME	       := '00B4'O,	//180
+				ID		       := 'c0a83084'O,
+				OPTION_LEN	       := '26'O,
+				CAPACABILITY_TYPE      := '02'O,
+				CAPACABILITY_LEN       := '06'O,
+				CAPACABILITY_VALUE     := '010400010001'O,
+				CAPACABILITY1_TYPE     := '02'O,
+				CAPACABILITY1_LEN      := '06'O,
+				CAPACABILITY1_VALUE    := '010400020001'O,
+				CAPACABILITY2_TYPE     := '02'O,
+				CAPACABILITY2_LEN      := '02'O,
+				CAPACABILITY2_VALUE    := '8000'O,
+				CAPACABILITY3_TYPE     := '02'O,
+				CAPACABILITY3_LEN      := '02'O,
+				CAPACABILITY3_VALUE    := '0200'O,
+				CAPACABILITY4_TYPE     := '02'O,
+				CAPACABILITY4_LEN      := '06'O,
+				CAPACABILITY4_VALUE    := '410400001dfb'O,  //MY_AS
+				CAPACABILITY5_TYPE     := '02'O,
+				CAPACABILITY5_LEN      := '04'O,
+				CAPACABILITY5_VALUE    := ?,	
+				MARKER_KEEP	       := 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH_KEEP	       := '0013'O,
+				TYPE_KEEP              := '04'O
+			};
+		}//end group TEMPL_OPEN
+
+		
+		group	TEMPL_KEEPALIVE
+		{
+			
+
+			template	BGP_KEEPALIVE		KEEPALIVE_SEND :=
+			{
+				MARKER	:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH	:= '0013'O,
+				TYPE	:= '04'O
+			};
+			template	BGP_KEEPALIVE		KEEPALIVE_RECEIVE :=
+			{
+				MARKER	:= ?,
+				LENGTH	:= ?,
+				TYPE	:= '04'O
+			};
+		}//end group TEMPL_KEEPALIVE
+		
+		template	BGP_UPDATE_SEND		UPDATE_SEND :=
+		{
+			MARKER				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+			LENGTH				:= '0017'O,
+			TYPE				:= '02'O,
+			UNFEASIBLE			:= '0000'O,
+			PATHATTRIBUTE_LEN		:= '0000'O,
+			MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+			LENGTH1				:= '005e'O,
+			TYPE1				:= '02'O,
+			UNFEASIBLE1			:= '0000'O,
+			PATHATTRIBUTE_LEN1		:= '0047'O,
+			MP_REACH_NLRI_FLAG              :='90'O,
+			MP_REACH_NLRI_TYPE              :='0e'O,
+			MP_REACH_NLRI_LEN               :='002e'O,
+			MP_REACH_NLRI_ADDRFAM           :='0002'O,
+			MP_REACH_NLRI_ADF_SUB           :='01'O,
+			MP_REACH_NLRI_NEXTHOP_NUM       :='20'O,
+			MP_REACH_NLRI_NEXTHOP           :='20010000000200000000000000000005'O,
+			MP_REACH_NLRI_NEXTHOP_L         :='fe8000000000000000ad544b568b6d31'O,  
+			MP_REACH_NLRI_SUB_ATTA          :='00'O,
+			MP_REACH_NLRI_PREFIX_LEN        :='40'O,
+			MP_REACH_NLRI_PREFIX_VAL        :='2001000000070000'O,
+			ORIGIN				:= '400101'O,
+			ORIGIN_TYPE			:= '00'O,
+			AS_PATH				:= '5002'O,
+			AS_LEN				:= '0006'O,
+			AS_SEG_TYPE			:= '02'O,
+			AS_SEG_LEN			:= '01'O,
+			AS_SEG_VAL			:= '00000046'O,   //70
+			MULTI_EXIT_DISC			:= '8004'O,
+			MULTI_EXIT_DISC_LEN		:= '04'O,
+			MULTI_EXIT_DISC_VAL		:= '00000000'O,
+			NEXT_UPDATE_MARKER              :='FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+			NEXT_UPDATE_PATHATTR            :='001d0200000006800f03000201'O
+		};
+		
+		template      BGP_UPDATE  UPDATE_RECEIVE   :=
+		{
+			MARKER				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+			LENGTH				:= '0017'O,
+			TYPE				:= '02'O,
+			UNFEASIBLE			:= '0000'O,
+			PATHATTRIBUTE_LEN		:= '0000'O,
+			NEXT_UPDATE_MARKER              :='FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+			NEXT_UPDATE_PATHATTR            :='001d0200000006800f03000201'O
+			
+		}
+
+		
+		group	TEMPL_NOTIFICATION
+		{	
+			template	BGP_NOTIFICATION		NOTIFICATION_RECEIVE :=
+			{
+				MARKER			:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH			:= '0015'O,
+				TYPE		        := '03'O,
+				ERR_CODE		:= '04'O,
+				ERR_SUBCODE	        := '00'O
+			};
+		}
+		
+		group	Port
+		{
+			type port	BGP_Port	message
+			{
+				inout	all;
+			}		
+		}//end group Port
+		
+		group	TestAbstractComponent
+		{
+			type component	BGPPLUS_MTC_Component
+			{
+				port	BGP_Port		BGPPLUS_port_map;
+				timer	BGP_Timer_Hold := 120;
+				timer	BGP_Timer_KeepAlive := 120; //unit-s
+			
+			}
+		}	//end group TestAbstractComponent
+		
+		group	TestSystemInterface
+		{
+			type component BGP_Interface
+			{
+				port 	BGP_Port		BGP_Interface_PortA; 
+				port   BGP_Port                BGP_Interface_PortB;
+			}
+		}//end group TestSystemInterface
+		
+		
+		/* Test send update frame*/
+		testcase	BGP_SEND_UPDATE()	runs on BGPPLUS_MTC_Component system BGP_Interface
+		{
+			map(mtc:BGPPLUS_port_map, system:BGP_Interface_PortA);
+			
+			BGPPLUS_port_map.send(OPEN_SEND);
+			BGP_Timer_Hold.start;
+			alt	//01
+			{//wait for receive open frame
+				[]BGPPLUS_port_map.receive(OPEN_AND_KEEPALIVE_RECEIVE)
+				{
+					BGPPLUS_port_map.send(KEEPALIVE_SEND);
+					BGP_Timer_KeepAlive.start;
+					alt	//02
+					{//wait for receive keepalive frame
+						[]BGPPLUS_port_map.receive(KEEPALIVE_RECEIVE)
+						{
+							BGPPLUS_port_map.send(KEEPALIVE_SEND);
+							BGP_Timer_KeepAlive.start;
+							alt   //03
+							{
+								[]BGPPLUS_port_map.receive(UPDATE_RECEIVE)
+								{
+									BGPPLUS_port_map.send(UPDATE_SEND);
+									var integer MyVar := 3;
+									BGP_Timer_KeepAlive.start;
+									label L1
+									alt   //04
+									{
+										[]BGPPLUS_port_map.receive(KEEPALIVE_RECEIVE)
+										{
+											MyVar :=MyVar-1;
+											if(MyVar>0)
+											{
+												BGP_Timer_KeepAlive.start;
+												goto L1;
+											}
+											else
+											{
+												BGP_Timer_Hold.start;
+												alt
+												{
+													[]BGPPLUS_port_map.receive(NOTIFICATION_RECEIVE)
+													{
+														setverdict(pass);
+														stop;
+													}
+													[]BGP_Timer_Hold.timeout	
+													{
+														setverdict(fail);
+														stop;
+													}
+													[]BGPPLUS_port_map.receive
+													{
+														setverdict(fail);
+														stop;
+													}	
+												}
+											}
+										}
+										[]BGP_Timer_KeepAlive.timeout
+										{
+											setverdict(fail);
+											stop;
+										}
+										[]BGPPLUS_port_map.receive
+										{
+											setverdict(fail);
+											stop;
+										}
+									}//04
+								}
+								[]BGP_Timer_KeepAlive.timeout
+								{
+									setverdict(fail);
+									stop;
+								}
+								[]BGPPLUS_port_map.receive
+								{
+									setverdict(fail);
+									stop;
+								}
+							}
+						}
+						[]BGP_Timer_KeepAlive.timeout
+						{
+							setverdict(fail);
+							stop;
+						}
+						[]BGPPLUS_port_map.receive
+						{
+							setverdict(fail);
+							stop;
+						}
+					}//end alt 02	
+				}
+				[]BGP_Timer_Hold.timeout	
+				{
+					setverdict(fail);
+					stop;
+				}	
+				[]BGPPLUS_port_map.receive	
+				{					
+					setverdict(fail);
+					stop;
+				}
+			}// end alt 01
+		}// end testcase BGP_SEND_UPDATE()
+		
+}//end module BGP_STATE
