@@ -482,7 +482,7 @@ public class BGP_TestAdapter extends TestAdapter implements TriCommunicationSA,T
 			}
 			catch (Exception ioex)
 			{
-				RB.logging.logDatapackets("\n"+ioex.toString());
+				RB.logging.logDatapackets("\ntcp ioex"+ioex.toString());
 				return new TriStatusImpl(ioex.getMessage());
 			}
 		} 
@@ -514,7 +514,7 @@ public class BGP_TestAdapter extends TestAdapter implements TriCommunicationSA,T
 			}
 			catch (Exception ex)
 			{
-				RB.logging.logDatapackets("\n"+ex.toString() + "send error\t\n");
+				RB.logging.logDatapackets("\nioex"+ex.toString() + "send error\t\n");
 				return new TriStatusImpl(ex.getMessage());
 			}
 		}

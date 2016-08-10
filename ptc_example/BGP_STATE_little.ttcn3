@@ -500,7 +500,7 @@ module BGP_STATE_little
 			type component       BGP_PTC_Component
 			{
 				port	BGP_Port		BGPPLUS_PTC_port_map;
-				port   BGP_Port                BGPPLUS_PTC_port_connect_ptc1;
+				port   BGP_Port                BGPPLUS_PTC_port_connect_mtc;
 			}
 		}	//end group TestAbstractComponent
 		
@@ -516,18 +516,31 @@ module BGP_STATE_little
 		
 		function fun_ptc1_send_data() runs on BGP_PTC_Component
 		{
-			BGPPLUS_PTC_port_map.send(KEEPALIVE_SEND);
+			label L3
+			alt
+			{
+				[]BGPPLUS_PTC_port_connect_mtc.receive(KEEPALIVE_SEND)
+				{
+					BGPPLUS_PTC_port_map.send(KEEPALIVE_SEND);
+					goto L3;
+				}
+				
+			}
+			
 		}
 		
 		/* Test send update frame*/
 		testcase	BGP_SEND_UPDATE()	runs on BGPPLUS_MTC_Component system BGP_Interface
 		{
 			var BGP_PTC_Component v_ptc1 := BGP_PTC_Component.create;
-			connect(self:BGPPLUS_port_connect_ptc1, v_ptc1:BGPPLUS_PTC_port_connect_ptc1);
+			connect(self:BGPPLUS_port_connect_ptc1, v_ptc1:BGPPLUS_PTC_port_connect_mtc);
+			map(v_ptc1:BGPPLUS_PTC_port_map, system:BGP_Interface_PortB);
+			var integer  flag :=100;
+		
 
 			map(mtc:BGPPLUS_port_map, system:BGP_Interface_PortA);
-			map(v_ptc1:BGPPLUS_PTC_port_map, system:BGP_Interface_PortB);
-			
+		
+			v_ptc1.start(fun_ptc1_send_data());
 			BGPPLUS_port_map.send(OPEN_SEND);
 			BGP_Timer_Hold.start;
 			alt	//01
@@ -547,7 +560,7 @@ module BGP_STATE_little
 								[]BGPPLUS_port_map.receive(UPDATE_RECEIVE)
 								{
 									BGPPLUS_port_map.send(UPDATE_SEND);
-									var integer MyVar := 4;
+									var integer MyVar := 100;
 									BGP_Timer_KeepAlive.start;
 									label L1
 									alt   //04
@@ -555,8 +568,13 @@ module BGP_STATE_little
 										[]BGPPLUS_port_map.receive(KEEPALIVE_RECEIVE)
 										{
 											BGPPLUS_port_map.send(KEEPALIVE_SEND);
-											v_ptc1.start(fun_ptc1_send_data())
-											MyVar :=MyVar-1;
+											MyVar := MyVar -1;
+											if (flag > 0)
+											{
+												BGPPLUS_port_connect_ptc1.send(KEEPALIVE_SEND);
+												flag := flag -1;
+											}
+											
 											if(MyVar>0)
 											{
 												BGP_Timer_KeepAlive.start;
