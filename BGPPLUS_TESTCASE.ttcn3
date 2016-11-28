@@ -193,7 +193,64 @@ module BGPPLUS_TESTCASE
 					Oct16   NEXT_UPDATE_MARKER,
 					Oct13   NEXT_UPDATE_PATHATTR						
 				}// end record 
-
+                                type	record	BGP_UPDATE_SEND_ONE
+				{
+					Oct16   MARKER1,
+					Oct2	LENGTH1,
+					Oct1	TYPE1,
+					Oct2	UNFEASIBLE1,
+					Oct2	PATHATTRIBUTE_LEN1,
+					Oct1    MP_REACH_NLRI_FLAG,
+					Oct1    MP_REACH_NLRI_TYPE,
+					Oct2    MP_REACH_NLRI_LEN,
+					Oct2    MP_REACH_NLRI_ADDRFAM,
+					Oct1    MP_REACH_NLRI_ADF_SUB,
+					Oct1    MP_REACH_NLRI_NEXTHOP_NUM,
+					Oct16   MP_REACH_NLRI_NEXTHOP,
+					Oct16   MP_REACH_NLRI_NEXTHOP_L,
+					Oct1    MP_REACH_NLRI_SUB_ATTA,
+					Oct1    MP_REACH_NLRI_PREFIX_LEN,
+					Oct8    MP_REACH_NLRI_PREFIX_VAL,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct2	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct4	AS_SEG_VAL,
+					Oct2	MULTI_EXIT_DISC,
+					Oct1	MULTI_EXIT_DISC_LEN,
+					Oct4	MULTI_EXIT_DISC_VAL						
+				}// end record 
+				
+				type	record	BGP_UPDATE_RECEIVE_TWO
+				{
+					Oct16   MARKER1,
+					Oct2	LENGTH1,
+					Oct1	TYPE1,
+					Oct2	UNFEASIBLE1,
+					Oct2	PATHATTRIBUTE_LEN1,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct2	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct8	AS_SEG_VAL,
+					Oct1    MP_REACH_NLRI_FLAG,
+					Oct1    MP_REACH_NLRI_TYPE,
+					Oct1    MP_REACH_NLRI_LEN,
+					Oct2    MP_REACH_NLRI_ADDRFAM,
+					Oct1    MP_REACH_NLRI_ADF_SUB,
+					Oct1    MP_REACH_NLRI_NEXTHOP_NUM,
+					Oct16   MP_REACH_NLRI_NEXTHOP,
+					Oct16   MP_REACH_NLRI_NEXTHOP_L,
+					Oct1    MP_REACH_NLRI_SUB_ATTA,
+					Oct1    MP_REACH_NLRI_PREFIX_LEN,
+					Oct8    MP_REACH_NLRI_PREFIX_VAL,
+					Oct16   MARKER,
+					Oct13   PATHATTR					
+				}// end record 
 				type	record	BGP_UPDATE_RECEIVE
 				{
 					Oct16   MARKER1,
@@ -493,7 +550,7 @@ module BGPPLUS_TESTCASE
 				NEXT_UPDATE_PATHATTR            :='001d0200000006800f03000201'O
 			};
 		        
-			template	BGP_UPDATE_SEND		UPDATE_SEND_PRE2 :=
+			template	BGP_UPDATE_SEND_ONE		UPDATE_SEND_PRE2 :=
 			{
 				MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
 				LENGTH1				:= '005e'O,
@@ -520,12 +577,10 @@ module BGPPLUS_TESTCASE
 				AS_SEG_VAL			:= AS_Number_A32,
 				MULTI_EXIT_DISC			:= '8004'O,
 				MULTI_EXIT_DISC_LEN		:= '04'O,
-				MULTI_EXIT_DISC_VAL		:= '00000000'O,
-				NEXT_UPDATE_MARKER              :='FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
-				NEXT_UPDATE_PATHATTR            :='001d0200000006800f03000201'O
+				MULTI_EXIT_DISC_VAL		:= '00000000'O
 			};
 			
-			template BGP_UPDATE_RECEIVE  UPDATE_RECEIEVE_FROM_Q :=
+			template BGP_UPDATE_RECEIVE  UPDATE_RECEIEVE_FROM_Q_B :=
 			{
 				MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
 				LENGTH1				:= '005a'O,
@@ -550,6 +605,35 @@ module BGPPLUS_TESTCASE
 				MP_REACH_NLRI_SUB_ATTA          :='00'O,
 				MP_REACH_NLRI_PREFIX_LEN        :='40'O,
 				MP_REACH_NLRI_PREFIX_VAL        := ?
+			}
+			
+			template BGP_UPDATE_RECEIVE_TWO  UPDATE_RECEIEVE_FROM_Q_C :=
+			{
+				MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1				:= '005a'O,
+				TYPE1				:= '02'O,
+				UNFEASIBLE1			:= '0000'O,
+				PATHATTRIBUTE_LEN1		:= '0043'O,
+				ORIGIN				:= '400101'O,
+				ORIGIN_TYPE			:= '00'O,
+				AS_PATH				:= '5002'O,
+				AS_LEN				:= '000a'O,
+				AS_SEG_TYPE			:= '02'O,
+				AS_SEG_LEN			:= '02'O,
+				AS_SEG_VAL			:= '000003e800000064'O,
+				MP_REACH_NLRI_FLAG              :='80'O,
+				MP_REACH_NLRI_TYPE              :='0e'O,
+				MP_REACH_NLRI_LEN               :='2e'O,
+				MP_REACH_NLRI_ADDRFAM           :='0002'O,
+				MP_REACH_NLRI_ADF_SUB           :='01'O,
+				MP_REACH_NLRI_NEXTHOP_NUM       :='20'O,
+				MP_REACH_NLRI_NEXTHOP           := NextHopIPv6_Quagga_C,
+				MP_REACH_NLRI_NEXTHOP_L         := NextHopIPv6_Quagga_C_L,  
+				MP_REACH_NLRI_SUB_ATTA          :='00'O,
+				MP_REACH_NLRI_PREFIX_LEN        :='40'O,
+				MP_REACH_NLRI_PREFIX_VAL        := ?,
+				MARKER              :='FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				PATHATTR            :='001d0200000006800f03000201'O
 			}
 
             template BGP_UPDATE_RECEIVE_ONEHOP  UPDATE_RECEIEVE_FROM_QUA_A :=
@@ -695,7 +779,7 @@ module BGPPLUS_TESTCASE
 												BGP_Timer_Hold.start;
 												alt
 												{
-													[]BGPPLUS_PTC_port_map.receive(UPDATE_RECEIEVE_FROM_Q)
+													[]BGPPLUS_PTC_port_map.receive(UPDATE_RECEIEVE_FROM_Q_B)
 													{
 														BGPPLUS_PTC_port_map.send(KEEPALIVE_SEND);
 														BGP_Timer_KeepAlive.start;
@@ -851,86 +935,74 @@ module BGPPLUS_TESTCASE
 										BGP_Timer_KeepAlive.start;
 										alt //03
 										{
-											[]BGPPLUS_PTC_port_map.receive(UPDATE_RECEIVE)
+											[]BGPPLUS_PTC_port_map.receive(UPDATE_RECEIEVE_FROM_Q_C)
 											{
-												BGP_Timer_Hold.start;
-												alt
+												BGPPLUS_PTC_port_map.send(KEEPALIVE_SEND);
+												BGP_Timer_KeepAlive.start;
+												label L2
+												alt   //04
 												{
-													[]BGPPLUS_PTC_port_map.receive(UPDATE_RECEIEVE_FROM_Q)
+													[]BGPPLUS_PTC_port_map.receive(KEEPALIVE_RECEIVE)
 													{
-														BGPPLUS_PTC_port_map.send(KEEPALIVE_SEND);
-														BGP_Timer_KeepAlive.start;
-														label L2
-														alt   //04
+														if(PTC_KeepAliveTimes > 0)
 														{
-															[]BGPPLUS_PTC_port_map.receive(KEEPALIVE_RECEIVE)
+															BGPPLUS_PTC_port_map.send(KEEPALIVE_SEND);
+															BGP_Timer_Hold.start;
+															BGP_Timer_KeepAlive.start;
+															PTC_KeepAliveTimes := PTC_KeepAliveTimes -1;
+															goto L2;
+														}
+														else
+														{
+															var integer KeepAlive_Interrupt := 2;
+															BGP_Timer_KeepAlive.start;
+															label L3
+															alt   //05
 															{
-																if(PTC_KeepAliveTimes > 0)
+																[]BGPPLUS_PTC_port_map.receive(KEEPALIVE_RECEIVE)
 																{
-																	BGPPLUS_PTC_port_map.send(KEEPALIVE_SEND);
-																	BGP_Timer_Hold.start;
-																	BGP_Timer_KeepAlive.start;
-																	PTC_KeepAliveTimes := PTC_KeepAliveTimes -1;
-																	goto L2;
-																}
-																else
-																{
-																	var integer KeepAlive_Interrupt := 2;
-																	BGP_Timer_KeepAlive.start;
-																	label L3
-																	alt   //05
+																	KeepAlive_Interrupt :=KeepAlive_Interrupt-1;
+																	if(KeepAlive_Interrupt>0)
 																	{
-																		[]BGPPLUS_PTC_port_map.receive(KEEPALIVE_RECEIVE)
+																		BGP_Timer_KeepAlive.start;
+																		goto L3;
+																	}
+																	else
+																	{
+																		BGP_Timer_Hold.start;
+																		alt
 																		{
-																			KeepAlive_Interrupt :=KeepAlive_Interrupt-1;
-																			if(KeepAlive_Interrupt>0)
+																			[]BGPPLUS_PTC_port_map.receive(NOTIFICATION_RECEIVE)
 																			{
-																				BGP_Timer_KeepAlive.start;
-																				goto L3;
+																				BGPPLUS_PTC_port_connect_mtc.send(PTC2_NOTICE_MTC);
+																				setverdict(pass);
+																				stop;
 																			}
-																			else
+																			[]BGPPLUS_PTC_port_map.receive
 																			{
-																				BGP_Timer_Hold.start;
-																				alt
-																				{
-																					[]BGPPLUS_PTC_port_map.receive(NOTIFICATION_RECEIVE)
-																					{
-																						BGPPLUS_PTC_port_connect_mtc.send(PTC2_NOTICE_MTC);
-																						setverdict(pass);
-																						stop;
-																					}
-																					[]BGPPLUS_PTC_port_map.receive
-																					{
-																						setverdict(fail);
-																						stop;
-																					}	
-																					[]BGP_Timer_Hold.timeout	
-																					{
-																						setverdict(fail);
-																						stop;
-																					}
-																				}
+																				setverdict(fail);
+																				stop;
+																			}	
+																			[]BGP_Timer_Hold.timeout	
+																			{
+																				setverdict(fail);
+																				stop;
 																			}
 																		}
-																		[]BGP_Timer_KeepAlive.timeout	
-																		{
-																			setverdict(fail);
-																			stop;
-																		}
-																	}   // 05 setverdict(pass);
+																	}
 																}
-															}
-															[]BGPPLUS_PTC_port_map.receive	
-															{
-																setverdict(fail);
-																stop;
-															}
-															[]BGP_Timer_Hold.timeout	
-															{
-																setverdict(fail);
-																stop;
-															}
-														} //04
+																[]BGPPLUS_PTC_port_map.receive	
+																{
+																	setverdict(fail);
+																	stop;
+																}
+																[]BGP_Timer_KeepAlive.timeout	
+																{
+																	setverdict(fail);
+																	stop;
+																}
+															}   // 05 setverdict(pass);
+														} 
 													}
 													[]BGPPLUS_PTC_port_map.receive
 													{
@@ -942,7 +1014,7 @@ module BGPPLUS_TESTCASE
 														setverdict(fail);
 														stop;
 													}
-												}
+												} //04
 											}
 											[]BGPPLUS_PTC_port_map.receive	
 											{
@@ -1215,19 +1287,14 @@ module BGPPLUS_TESTCASE
 												}
 												else
 												{
-													alt{
-														[]v_ptc1.done
-														{
-															v_ptc1.stop;
-															setverdict(pass);
-															stop;
-														}
-													}
+													setverdict(pass);
+													stop;
 												}
 											}
 											[]BGPPLUS_port_map.receive(UPDATE_RECEIVE)
 											{
 												BGPPLUS_port_map.send(KEEPALIVE_SEND);
+												goto L1;
 											}
 											[]BGPPLUS_port_connect_ptc1.receive(PTC1_NOTICE_MTC)
 											{
@@ -1240,6 +1307,7 @@ module BGPPLUS_TESTCASE
 											[]BGPPLUS_port_connect_ptc2.receive(PTC2_NOTICE_MTC_SEND_PRE)
 											{
 												BGPPLUS_port_map.send(UPDATE_SEND_PRE2);
+												goto L1;
 											}
 											[]BGPPLUS_port_connect_ptc2.receive(PTC2_NOTICE_MTC)
 											{
