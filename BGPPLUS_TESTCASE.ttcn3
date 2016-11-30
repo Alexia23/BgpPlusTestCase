@@ -35,7 +35,9 @@ module BGPPLUS_TESTCASE
 			const Oct16    NextHopIPv6_C_L :='fe80000000000000a5e5bb808909601b'O;
 			const Oct8     Prefix1         :='2001000000040000'O;
 			const Oct8     Prefix2         :='2001000000050000'O;
-
+			const Oct8     Prefix3         :='2001000000060000'O;
+			const Oct8     Prefix4         :='2001000000070000'O;
+			const Oct8     Prefix5         :='2001000000080000'O;
 
 
 		}//end group BGP_CONSTANT
@@ -156,7 +158,18 @@ module BGPPLUS_TESTCASE
 					Oct2	LENGTH,
 					Oct1	TYPE
 
-				}//	end record BGP_KEEPALIVE	
+				}//	end record BGP_KEEPALIVE
+				
+				type record BGP_KEEPALIVE_TWO
+				{
+					Oct16	MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct16	MARKER1,
+					Oct2	LENGTH1,
+					Oct1	TYPE1
+
+				}//	end record BGP_KEEPALIVE
 		
 			}// end group PDU_KEEPALIVE
 			
@@ -277,6 +290,113 @@ module BGPPLUS_TESTCASE
 					Oct1    MP_REACH_NLRI_PREFIX_LEN,
 					Oct8    MP_REACH_NLRI_PREFIX_VAL					
 				}// end record 
+				
+				type	record	BGP_UPDATE_RECEIVE_TWO_Pac
+				{
+					Oct16   MARKER1,
+					Oct2	LENGTH1,
+					Oct1	TYPE1,
+					Oct2	UNFEASIBLE1,
+					Oct2	PATHATTRIBUTE_LEN1,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct2	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct8	AS_SEG_VAL,
+					Oct1    MP_REACH_NLRI_FLAG,
+					Oct1    MP_REACH_NLRI_TYPE,
+					Oct1    MP_REACH_NLRI_LEN,
+					Oct2    MP_REACH_NLRI_ADDRFAM,
+					Oct1    MP_REACH_NLRI_ADF_SUB,
+					Oct1    MP_REACH_NLRI_NEXTHOP_NUM,
+					Oct16   MP_REACH_NLRI_NEXTHOP,
+					Oct16   MP_REACH_NLRI_NEXTHOP_L,
+					Oct1    MP_REACH_NLRI_SUB_ATTA,
+					Oct1    MP_REACH_NLRI_PREFIX_LEN,
+					Oct8    MP_REACH_NLRI_PREFIX_VAL,
+					Oct16   MARKER1_2,
+					Oct2	LENGTH1_2,
+					Oct1	TYPE1_2,
+					Oct2	UNFEASIBLE1_2,
+					Oct2	PATHATTRIBUTE_LEN1_2,
+					Oct3	ORIGIN_2,
+					Oct1	ORIGIN_TYPE_2,
+					Oct2	AS_PATH_2,
+					Oct2	AS_LEN_2,
+					Oct1	AS_SEG_TYPE_2,
+					Oct1	AS_SEG_LEN_2,
+					Oct8	AS_SEG_VAL_2,
+					Oct1    MP_REACH_NLRI_FLAG_2,
+					Oct1    MP_REACH_NLRI_TYPE_2,
+					Oct1    MP_REACH_NLRI_LEN_2,
+					Oct2    MP_REACH_NLRI_ADDRFAM_2,
+					Oct1    MP_REACH_NLRI_ADF_SUB_2,
+					Oct1    MP_REACH_NLRI_NEXTHOP_NUM_2,
+					Oct16   MP_REACH_NLRI_NEXTHOP_2,
+					Oct16   MP_REACH_NLRI_NEXTHOP_L_2,
+					Oct1    MP_REACH_NLRI_SUB_ATTA_2,
+					Oct1    MP_REACH_NLRI_PREFIX_LEN_2,
+					Oct8    MP_REACH_NLRI_PREFIX_VAL_2					
+				}// end record 
+				
+				type	record	BGP_UPDATE_RECEIVE_TWO_Pac_Inc
+				{
+					Oct16   MARKER1,
+					Oct2	LENGTH1,
+					Oct1	TYPE1,
+					Oct2	UNFEASIBLE1,
+					Oct2	PATHATTRIBUTE_LEN1,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct2	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct4	AS_SEG_VAL,
+					Oct2	MULTI_EXIT_DISC,
+					Oct1	MULTI_EXIT_DISC_LEN,
+					Oct4	MULTI_EXIT_DISC_VAL,
+					Oct1    MP_REACH_NLRI_FLAG,
+					Oct1    MP_REACH_NLRI_TYPE,
+					Oct1    MP_REACH_NLRI_LEN,
+					Oct2    MP_REACH_NLRI_ADDRFAM,
+					Oct1    MP_REACH_NLRI_ADF_SUB,
+					Oct1    MP_REACH_NLRI_NEXTHOP_NUM,
+					Oct16   MP_REACH_NLRI_NEXTHOP,
+					Oct16   MP_REACH_NLRI_NEXTHOP_L,
+					Oct1    MP_REACH_NLRI_SUB_ATTA,
+					Oct1    MP_REACH_NLRI_PREFIX_LEN,
+					Oct8    MP_REACH_NLRI_PREFIX_VAL,
+					Oct16   MARKER1_2,
+					Oct2	LENGTH1_2,
+					Oct1	TYPE1_2,
+					Oct2	UNFEASIBLE1_2,
+					Oct2	PATHATTRIBUTE_LEN1_2,
+					Oct3	ORIGIN_2,
+					Oct1	ORIGIN_TYPE_2,
+					Oct2	AS_PATH_2,
+					Oct2	AS_LEN_2,
+					Oct1	AS_SEG_TYPE_2,
+					Oct1	AS_SEG_LEN_2,
+					Oct4	AS_SEG_VAL_2,
+					Oct2	MULTI_EXIT_DISC_2,
+					Oct1	MULTI_EXIT_DISC_LEN_2,
+					Oct4	MULTI_EXIT_DISC_VAL_2,
+					Oct1    MP_REACH_NLRI_FLAG_2,
+					Oct1    MP_REACH_NLRI_TYPE_2,
+					Oct1    MP_REACH_NLRI_LEN_2,
+					Oct2    MP_REACH_NLRI_ADDRFAM_2,
+					Oct1    MP_REACH_NLRI_ADF_SUB_2,
+					Oct1    MP_REACH_NLRI_NEXTHOP_NUM_2,
+					Oct16   MP_REACH_NLRI_NEXTHOP_2,
+					Oct16   MP_REACH_NLRI_NEXTHOP_L_2,
+					Oct1    MP_REACH_NLRI_SUB_ATTA_2,
+					Oct1    MP_REACH_NLRI_PREFIX_LEN_2,
+					Oct8    MP_REACH_NLRI_PREFIX_VAL_2					
+				}// end record 
+				
 				type	record	BGP_UPDATE_RECEIVE_ONEHOP
 				{
 					Oct16   MARKER1,
@@ -305,6 +425,55 @@ module BGPPLUS_TESTCASE
 					Oct8    MP_REACH_NLRI_PREFIX_VAL						
 				}// end record 
 				
+				
+				type	record	BGP_UPDATE_AND_WD_RECEIVE_ONEHOP
+				{
+					Oct16   MARKER1,
+					Oct2	LENGTH1,
+					Oct1	TYPE1,
+					Oct2	UNFEASIBLE1,
+					Oct2	PATHATTRIBUTE_LEN1,
+					Oct3	ORIGIN,
+					Oct1	ORIGIN_TYPE,
+					Oct2	AS_PATH,
+					Oct2	AS_LEN,
+					Oct1	AS_SEG_TYPE,
+					Oct1	AS_SEG_LEN,
+					Oct4	AS_SEG_VAL,
+					Oct7    MULTI_EXIT_DISC,
+					Oct1    MP_REACH_NLRI_FLAG,
+					Oct1    MP_REACH_NLRI_TYPE,
+					Oct1    MP_REACH_NLRI_LEN,
+					Oct2    MP_REACH_NLRI_ADDRFAM,
+					Oct1    MP_REACH_NLRI_ADF_SUB,
+					Oct1    MP_REACH_NLRI_NEXTHOP_NUM,
+					Oct16   MP_REACH_NLRI_NEXTHOP,
+					Oct16   MP_REACH_NLRI_NEXTHOP_L,
+					Oct1    MP_REACH_NLRI_SUB_ATTA,
+					Oct1    MP_REACH_NLRI_PREFIX_LEN,
+					Oct8    MP_REACH_NLRI_PREFIX_VAL,
+					Oct16   MARKER,
+					Oct13   PATHATTR
+				}// end record 
+				
+				type record BGP_KEEPALIVE_OPTS_UPDATE_WD
+				{
+					Oct16	MARKER,
+					Oct2	LENGTH,
+					Oct1	TYPE,
+					Oct16	MARKER1,
+					Oct2	LENGTH1,
+					Oct1	TYPE1,
+					Oct2    WD_LEN,
+					Oct2    PATH_LEN,
+					Oct1    MP_UNREACH_NLRI_FLAG,
+					Oct1    MP_UNREACH_NLRI_TYPE,
+					Oct1    MP_UNREACH_NLRI_LEN,
+					Oct2    MP_UNREACH_NLRI_ADDRFAM,
+					Oct1    MP_UNREACH_NLRI_ADF_SUB,
+					Oct1    MP_UNREACH_NLRI_PREFIX_LEN,
+					Oct8    MP_UNREACH_NLRI_PREFIX_VAL
+				}
 				type record BGP_UPDATE
 				{
 					Oct16   MARKER,
@@ -508,6 +677,15 @@ module BGPPLUS_TESTCASE
 				LENGTH	:= '0013'O,
 				TYPE	:= '04'O
 			};
+			template	BGP_KEEPALIVE_TWO		KEEPALIVE_SEND_TWO :=
+			{
+				MARKER	:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH	:= '0013'O,
+				TYPE	:= '04'O,
+				MARKER1	:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1	:= '0013'O,
+				TYPE1	:= '04'O
+			};
 			template	BGP_KEEPALIVE		KEEPALIVE_RECEIVE :=
 			{
 				MARKER	:= ?,
@@ -580,6 +758,97 @@ module BGPPLUS_TESTCASE
 				MULTI_EXIT_DISC_VAL		:= '00000000'O
 			};
 			
+			template	BGP_UPDATE_SEND		UPDATE_SEND_PRE3 :=
+			{
+				MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1				:= '005e'O,
+				TYPE1				:= '02'O,
+				UNFEASIBLE1			:= '0000'O,
+				PATHATTRIBUTE_LEN1		:= '0047'O,
+				MP_REACH_NLRI_FLAG              :='90'O,
+				MP_REACH_NLRI_TYPE              :='0e'O,
+				MP_REACH_NLRI_LEN               :='002e'O,
+				MP_REACH_NLRI_ADDRFAM           :='0002'O,
+				MP_REACH_NLRI_ADF_SUB           :='01'O,
+				MP_REACH_NLRI_NEXTHOP_NUM       :='20'O,
+				MP_REACH_NLRI_NEXTHOP           := NextHopIPv6_A,
+				MP_REACH_NLRI_NEXTHOP_L         := NextHopIPv6_A_L,  
+				MP_REACH_NLRI_SUB_ATTA          :='00'O,
+				MP_REACH_NLRI_PREFIX_LEN        :='40'O,
+				MP_REACH_NLRI_PREFIX_VAL        := Prefix3,
+				ORIGIN				:= '400101'O,
+				ORIGIN_TYPE			:= '00'O,
+				AS_PATH				:= '5002'O,
+				AS_LEN				:= '0006'O,
+				AS_SEG_TYPE			:= '02'O,
+				AS_SEG_LEN			:= '01'O,
+				AS_SEG_VAL			:= AS_Number_A32,
+				MULTI_EXIT_DISC			:= '8004'O,
+				MULTI_EXIT_DISC_LEN		:= '04'O,
+				MULTI_EXIT_DISC_VAL		:= '00000000'O,
+				NEXT_UPDATE_MARKER              :='FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				NEXT_UPDATE_PATHATTR            :='001d0200000006800f03000201'O
+			};
+			
+			template	BGP_UPDATE_SEND_ONE		UPDATE_SEND_PRE4 :=
+			{
+				MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1				:= '005e'O,
+				TYPE1				:= '02'O,
+				UNFEASIBLE1			:= '0000'O,
+				PATHATTRIBUTE_LEN1		:= '0047'O,
+				MP_REACH_NLRI_FLAG              :='90'O,
+				MP_REACH_NLRI_TYPE              :='0e'O,
+				MP_REACH_NLRI_LEN               :='002e'O,
+				MP_REACH_NLRI_ADDRFAM           :='0002'O,
+				MP_REACH_NLRI_ADF_SUB           :='01'O,
+				MP_REACH_NLRI_NEXTHOP_NUM       :='20'O,
+				MP_REACH_NLRI_NEXTHOP           := NextHopIPv6_A,
+				MP_REACH_NLRI_NEXTHOP_L         := NextHopIPv6_A_L,  
+				MP_REACH_NLRI_SUB_ATTA          :='00'O,
+				MP_REACH_NLRI_PREFIX_LEN        :='40'O,
+				MP_REACH_NLRI_PREFIX_VAL        := Prefix4,
+				ORIGIN				:= '400101'O,
+				ORIGIN_TYPE			:= '00'O,
+				AS_PATH				:= '5002'O,
+				AS_LEN				:= '0006'O,
+				AS_SEG_TYPE			:= '02'O,
+				AS_SEG_LEN			:= '01'O,
+				AS_SEG_VAL			:= AS_Number_A32,
+				MULTI_EXIT_DISC			:= '8004'O,
+				MULTI_EXIT_DISC_LEN		:= '04'O,
+				MULTI_EXIT_DISC_VAL		:= '00000000'O
+			};
+			template	BGP_UPDATE_SEND_ONE		UPDATE_SEND_PRE5 :=
+			{
+				MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1				:= '005e'O,
+				TYPE1				:= '02'O,
+				UNFEASIBLE1			:= '0000'O,
+				PATHATTRIBUTE_LEN1		:= '0047'O,
+				MP_REACH_NLRI_FLAG              :='90'O,
+				MP_REACH_NLRI_TYPE              :='0e'O,
+				MP_REACH_NLRI_LEN               :='002e'O,
+				MP_REACH_NLRI_ADDRFAM           :='0002'O,
+				MP_REACH_NLRI_ADF_SUB           :='01'O,
+				MP_REACH_NLRI_NEXTHOP_NUM       :='20'O,
+				MP_REACH_NLRI_NEXTHOP           := NextHopIPv6_A,
+				MP_REACH_NLRI_NEXTHOP_L         := NextHopIPv6_A_L,  
+				MP_REACH_NLRI_SUB_ATTA          :='00'O,
+				MP_REACH_NLRI_PREFIX_LEN        :='40'O,
+				MP_REACH_NLRI_PREFIX_VAL        := Prefix5,
+				ORIGIN				:= '400101'O,
+				ORIGIN_TYPE			:= '00'O,
+				AS_PATH				:= '5002'O,
+				AS_LEN				:= '0006'O,
+				AS_SEG_TYPE			:= '02'O,
+				AS_SEG_LEN			:= '01'O,
+				AS_SEG_VAL			:= AS_Number_A32,
+				MULTI_EXIT_DISC			:= '8004'O,
+				MULTI_EXIT_DISC_LEN		:= '04'O,
+				MULTI_EXIT_DISC_VAL		:= '00000000'O
+			};
+			
 			template BGP_UPDATE_RECEIVE  UPDATE_RECEIEVE_FROM_Q_B :=
 			{
 				MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
@@ -605,6 +874,112 @@ module BGPPLUS_TESTCASE
 				MP_REACH_NLRI_SUB_ATTA          :='00'O,
 				MP_REACH_NLRI_PREFIX_LEN        :='40'O,
 				MP_REACH_NLRI_PREFIX_VAL        := ?
+			}
+			
+			template BGP_UPDATE_RECEIVE_TWO_Pac  UPDATE_RECEIEVE_FROM_Q_A_Two :=
+			{
+				MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1				:= '005a'O,
+				TYPE1				:= '02'O,
+				UNFEASIBLE1			:= '0000'O,
+				PATHATTRIBUTE_LEN1		:= '0043'O,
+				ORIGIN				:= '400101'O,
+				ORIGIN_TYPE			:= '00'O,
+				AS_PATH				:= '5002'O,
+				AS_LEN				:= '000a'O,
+				AS_SEG_TYPE			:= '02'O,
+				AS_SEG_LEN			:= '02'O,
+				AS_SEG_VAL			:= '000003e800000064'O,
+				MP_REACH_NLRI_FLAG              :='80'O,
+				MP_REACH_NLRI_TYPE              :='0e'O,
+				MP_REACH_NLRI_LEN               :='2e'O,
+				MP_REACH_NLRI_ADDRFAM           :='0002'O,
+				MP_REACH_NLRI_ADF_SUB           :='01'O,
+				MP_REACH_NLRI_NEXTHOP_NUM       :='20'O,
+				MP_REACH_NLRI_NEXTHOP           := NextHopIPv6_Quagga_B,
+				MP_REACH_NLRI_NEXTHOP_L         := NextHopIPv6_Quagga_B_L,  
+				MP_REACH_NLRI_SUB_ATTA          :='00'O,
+				MP_REACH_NLRI_PREFIX_LEN        :='40'O,
+				MP_REACH_NLRI_PREFIX_VAL        := ?,
+				MARKER1_2				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1_2				:= '005a'O,
+				TYPE1_2				:= '02'O,
+				UNFEASIBLE1_2			:= '0000'O,
+				PATHATTRIBUTE_LEN1_2		:= '0043'O,
+				ORIGIN_2				:= '400101'O,
+				ORIGIN_TYPE_2			:= '00'O,
+				AS_PATH_2				:= '5002'O,
+				AS_LEN_2				:= '000a'O,
+				AS_SEG_TYPE_2			:= '02'O,
+				AS_SEG_LEN_2			:= '02'O,
+				AS_SEG_VAL_2			:= '000003e800000064'O,
+				MP_REACH_NLRI_FLAG_2              :='80'O,
+				MP_REACH_NLRI_TYPE_2              :='0e'O,
+				MP_REACH_NLRI_LEN_2               :='2e'O,
+				MP_REACH_NLRI_ADDRFAM_2           :='0002'O,
+				MP_REACH_NLRI_ADF_SUB_2           :='01'O,
+				MP_REACH_NLRI_NEXTHOP_NUM_2       :='20'O,
+				MP_REACH_NLRI_NEXTHOP_2           := NextHopIPv6_Quagga_B,
+				MP_REACH_NLRI_NEXTHOP_L_2         := NextHopIPv6_Quagga_B_L,  
+				MP_REACH_NLRI_SUB_ATTA_2          :='00'O,
+				MP_REACH_NLRI_PREFIX_LEN_2        :='40'O,
+				MP_REACH_NLRI_PREFIX_VAL_2        := ?
+			}
+			
+			template BGP_UPDATE_RECEIVE_TWO_Pac_Inc  UPDATE_RECEIEVE_FROM_Q_A_Two_Incre :=
+			{
+				MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1				:= '005d'O,
+				TYPE1				:= '02'O,
+				UNFEASIBLE1			:= '0000'O,
+				PATHATTRIBUTE_LEN1		:= '0046'O,
+				ORIGIN				:= '400101'O,
+				ORIGIN_TYPE			:= '00'O,
+				AS_PATH				:= '5002'O,
+				AS_LEN				:= '0006'O,
+				AS_SEG_TYPE			:= '02'O,
+				AS_SEG_LEN			:= '01'O,
+				AS_SEG_VAL			:= '000003e8'O,
+				MULTI_EXIT_DISC			:= '8004'O,
+				MULTI_EXIT_DISC_LEN		:= '04'O,
+				MULTI_EXIT_DISC_VAL		:= '00000000'O,
+				MP_REACH_NLRI_FLAG              :='80'O,
+				MP_REACH_NLRI_TYPE              :='0e'O,
+				MP_REACH_NLRI_LEN               :='2e'O,
+				MP_REACH_NLRI_ADDRFAM           :='0002'O,
+				MP_REACH_NLRI_ADF_SUB           :='01'O,
+				MP_REACH_NLRI_NEXTHOP_NUM       :='20'O,
+				MP_REACH_NLRI_NEXTHOP           := NextHopIPv6_Quagga_A,
+				MP_REACH_NLRI_NEXTHOP_L         := NextHopIPv6_Quagga_A_L,  
+				MP_REACH_NLRI_SUB_ATTA          :='00'O,
+				MP_REACH_NLRI_PREFIX_LEN        :='40'O,
+				MP_REACH_NLRI_PREFIX_VAL        := ?,
+				MARKER1_2				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1_2				:= '005d'O,
+				TYPE1_2				:= '02'O,
+				UNFEASIBLE1_2			:= '0000'O,
+				PATHATTRIBUTE_LEN1_2		:= '0046'O,
+				ORIGIN_2				:= '400101'O,
+				ORIGIN_TYPE_2			:= '00'O,
+				AS_PATH_2				:= '5002'O,
+				AS_LEN_2				:= '0006'O,
+				AS_SEG_TYPE_2			:= '02'O,
+				AS_SEG_LEN_2			:= '01'O,
+				AS_SEG_VAL_2			:= '000003e8'O,
+				MULTI_EXIT_DISC_2			:= '8004'O,
+				MULTI_EXIT_DISC_LEN_2		:= '04'O,
+				MULTI_EXIT_DISC_VAL_2		:= '00000000'O,
+				MP_REACH_NLRI_FLAG_2              :='80'O,
+				MP_REACH_NLRI_TYPE_2              :='0e'O,
+				MP_REACH_NLRI_LEN_2               :='2e'O,
+				MP_REACH_NLRI_ADDRFAM_2           :='0002'O,
+				MP_REACH_NLRI_ADF_SUB_2           :='01'O,
+				MP_REACH_NLRI_NEXTHOP_NUM_2       :='20'O,
+				MP_REACH_NLRI_NEXTHOP_2           := NextHopIPv6_Quagga_A,
+				MP_REACH_NLRI_NEXTHOP_L_2         := NextHopIPv6_Quagga_A_L,  
+				MP_REACH_NLRI_SUB_ATTA_2          :='00'O,
+				MP_REACH_NLRI_PREFIX_LEN_2        :='40'O,
+				MP_REACH_NLRI_PREFIX_VAL_2        := ?
 			}
 			
 			template BGP_UPDATE_RECEIVE_TWO  UPDATE_RECEIEVE_FROM_Q_C :=
@@ -663,12 +1038,60 @@ module BGPPLUS_TESTCASE
 				MP_REACH_NLRI_PREFIX_LEN        :='40'O,
 				MP_REACH_NLRI_PREFIX_VAL        := ?
 			}
+			
+			template BGP_UPDATE_AND_WD_RECEIVE_ONEHOP  UPDATE_AND_WD_RECEIEVE_FROM_QUA_A :=
+			{
+				MARKER1				:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1				:= '005d'O,
+				TYPE1				:= '02'O,
+				UNFEASIBLE1			:= '0000'O,
+				PATHATTRIBUTE_LEN1		:= '0046'O,
+				ORIGIN				:= '400101'O,
+				ORIGIN_TYPE			:= '00'O,
+				AS_PATH				:= '5002'O,
+				AS_LEN				:= '0006'O,
+				AS_SEG_TYPE			:= '02'O,
+				AS_SEG_LEN			:= '01'O,
+				AS_SEG_VAL			:= '000003e8'O,
+				MULTI_EXIT_DISC                 :='80040400000000'O,
+				MP_REACH_NLRI_FLAG              :='80'O,
+				MP_REACH_NLRI_TYPE              :='0e'O,
+				MP_REACH_NLRI_LEN               :='2e'O,
+				MP_REACH_NLRI_ADDRFAM           :='0002'O,
+				MP_REACH_NLRI_ADF_SUB           :='01'O,
+				MP_REACH_NLRI_NEXTHOP_NUM       :='20'O,
+				MP_REACH_NLRI_NEXTHOP           := NextHopIPv6_Quagga_A,
+				MP_REACH_NLRI_NEXTHOP_L         := NextHopIPv6_Quagga_A_L,  
+				MP_REACH_NLRI_SUB_ATTA          :='00'O,
+				MP_REACH_NLRI_PREFIX_LEN        :='40'O,
+				MP_REACH_NLRI_PREFIX_VAL        := ?,
+				MARKER              :='FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				PATHATTR            :='001d0200000006800f03000201'O
+			}
 
 			template      BGP_UPDATE  UPDATE_RECEIVE   :=
 			{
 				MARKER              :='FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
 				PATHATTR            :='001d0200000006800f03000201'O
 			
+			}
+			template BGP_KEEPALIVE_OPTS_UPDATE_WD KEEPALIVE_AND_UPFATE_RECEIVE :=
+			{
+				MARKER	:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH	:= '0013'O,
+				TYPE	:= '04'O,
+				MARKER1	:= 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'O,
+				LENGTH1	:= '0026'O,
+				TYPE1	:= '02'O,
+				WD_LEN  :='0000'O,
+				PATH_LEN :='000f'O,
+				MP_UNREACH_NLRI_FLAG              :='80'O,
+				MP_UNREACH_NLRI_TYPE              :='0f'O,
+				MP_UNREACH_NLRI_LEN               :='0c'O,
+				MP_UNREACH_NLRI_ADDRFAM           :='0002'O,
+				MP_UNREACH_NLRI_ADF_SUB           :='01'O,
+				MP_UNREACH_NLRI_PREFIX_LEN        :='40'O,
+				MP_UNREACH_NLRI_PREFIX_VAL        := ?
 			}
 		}
 		
@@ -705,6 +1128,14 @@ module BGPPLUS_TESTCASE
 			{
 				SEND_MES := '21'O
 			}
+			template  MTC_PTC   MTC_NOTICE_PTC3 :=
+			{
+				SEND_MES := '03'O
+			}
+			template  MTC_PTC   PTC3_NOTICE_MTC :=
+			{
+				SEND_MES := '30'O
+			}
 		}
 		group	Port
 		{
@@ -721,6 +1152,7 @@ module BGPPLUS_TESTCASE
 				port	BGP_Port		BGPPLUS_port_map;
 				port    BGP_Port        BGPPLUS_port_connect_ptc1;
 				port    BGP_Port        BGPPLUS_port_connect_ptc2;
+				timer	BGP_Test_Hold := 30;
 				timer	BGP_Timer_Hold := 120;
 				timer	BGP_Timer_KeepAlive := 120; //unit-s
 			}
@@ -730,6 +1162,7 @@ module BGPPLUS_TESTCASE
 				port	BGP_Port		BGPPLUS_PTC_port_map;
 				port    BGP_Port        BGPPLUS_PTC_port_connect_mtc;
 				port    BGP_Port        BGPPLUS_PTC_port_connect_ptc;
+				timer	BGP_Test_Hold := 30;
 				timer	BGP_Timer_Hold := 120;
 				timer	BGP_Timer_KeepAlive := 120; //unit-s
 			}
@@ -1086,82 +1519,6 @@ module BGPPLUS_TESTCASE
 				}
 			}  // end 1
 			
-		
-			testcase BGP_SEND_UPDATE() runs on BGPPLUS_MTC_Component system BGP_Interface
-			{
-				map(mtc:BGPPLUS_port_map, system:BGP_Interface_PortA);
-				BGPPLUS_port_map.send(OPEN_SEND_FROM_A);
-				BGP_Timer_Hold.start;
-				alt	//01
-				{ //wait for receive open frame
-					[]BGPPLUS_port_map.receive(OPEN_AND_KEEPALIVE_RECEIVE)
-					{
-						BGPPLUS_port_map.send(KEEPALIVE_SEND);
-						BGP_Timer_KeepAlive.start;
-						alt	//02
-						{//wait for receive keepalive frame
-							[]BGPPLUS_port_map.receive(KEEPALIVE_RECEIVE)
-							{
-								BGPPLUS_port_map.send(KEEPALIVE_SEND);
-								BGP_Timer_Hold.start;
-								alt   //03
-								{
-									[]BGPPLUS_port_map.receive(UPDATE_RECEIVE)
-									{
-										BGPPLUS_port_map.send(UPDATE_SEND);
-										BGP_Timer_Hold.start;
-										alt   //04
-										{
-											[]BGPPLUS_port_map.receive(KEEPALIVE_RECEIVE)
-											{
-												setverdict(pass);
-												stop;
-											}
-											[]BGPPLUS_port_map.receive	
-											{
-												setverdict(fail);
-												stop;
-											}
-											[]BGP_Timer_Hold.timeout	
-											{
-												setverdict(fail);
-												stop;
-											}
-										}    // 04
-									}
-									[]BGPPLUS_port_map.receive	
-									{
-										setverdict(fail);
-										stop;
-									}
-									[]BGP_Timer_Hold.timeout	
-									{
-										setverdict(fail);
-										stop;
-									}
-								}  // 03
-							}
-							[]BGPPLUS_port_map.receive	
-							{
-								setverdict(fail);
-								stop;
-							}
-							[]BGP_Timer_KeepAlive.timeout
-							{
-								setverdict(fail);
-								stop;
-							}
-						} // 02
-
-					}
-					[]BGP_Timer_Hold.timeout	
-					{
-						setverdict(fail);
-						stop;
-					}
-				}//01
-			} // end 2
-			
 			testcase BGP_KEEPALIVE() runs on BGPPLUS_MTC_Component system BGP_Interface
 			{
 				map(mtc:BGPPLUS_port_map, system:BGP_Interface_PortA);
@@ -1227,8 +1584,84 @@ module BGPPLUS_TESTCASE
 					}
 				}
 			} // end 3
+			
+			testcase BGP_SEND_UPDATE() runs on BGPPLUS_MTC_Component system BGP_Interface
+			{
+				map(mtc:BGPPLUS_port_map, system:BGP_Interface_PortA);
+				BGPPLUS_port_map.send(OPEN_SEND_FROM_A);
+				BGP_Timer_Hold.start;
+				alt	//01
+				{ //wait for receive open frame
+					[]BGPPLUS_port_map.receive(OPEN_AND_KEEPALIVE_RECEIVE)
+					{
+						BGPPLUS_port_map.send(KEEPALIVE_SEND);
+						BGP_Timer_KeepAlive.start;
+						alt	//02
+						{//wait for receive keepalive frame
+							[]BGPPLUS_port_map.receive(KEEPALIVE_RECEIVE )
+							{
+								BGPPLUS_port_map.send(KEEPALIVE_SEND);
+								BGP_Timer_Hold.start;
+								alt   //03
+								{
+									[]BGPPLUS_port_map.receive(UPDATE_RECEIVE)
+									{
+										BGPPLUS_port_map.send(UPDATE_SEND_PRE3);
+										BGP_Timer_Hold.start;
+										alt   //04
+										{
+											[]BGPPLUS_port_map.receive(KEEPALIVE_RECEIVE)
+											{
+												setverdict(pass);
+												stop;
+											}
+											[]BGPPLUS_port_map.receive	
+											{
+												setverdict(fail);
+												stop;
+											}
+											[]BGP_Timer_Hold.timeout	
+											{
+												setverdict(fail);
+												stop;
+											}
+										}    // 04
+									}
+									[]BGPPLUS_port_map.receive	
+									{
+										setverdict(fail);
+										stop;
+									}
+									[]BGP_Timer_Hold.timeout	
+									{
+										setverdict(fail);
+										stop;
+									}
+								}  // 03
+							}
+							[]BGPPLUS_port_map.receive	
+							{
+								setverdict(fail);
+								stop;
+							}
+							[]BGP_Timer_KeepAlive.timeout
+							{
+								setverdict(fail);
+								stop;
+							}
+						} // 02
 
-			// A B C
+					}
+					[]BGP_Timer_Hold.timeout	
+					{
+						setverdict(fail);
+						stop;
+					}
+				}//01
+			} // end 2
+			
+			
+
 			testcase BGP_DYNAMIC_PEER() runs on BGPPLUS_MTC_Component system BGP_Interface
 			{
 				var integer KeepAliveTimes := 10;
@@ -1263,7 +1696,7 @@ module BGPPLUS_TESTCASE
 							{
 								BGPPLUS_port_map.send(KEEPALIVE_SEND);
 								BGP_Timer_Hold.start;
-				                                BGP_Timer_KeepAlive.start;
+								BGP_Timer_KeepAlive.start;
 								BGPPLUS_port_connect_ptc1.send(MTC_NOTICE_PTC1);
 								alt   //03
 								{
@@ -1363,7 +1796,240 @@ module BGPPLUS_TESTCASE
 						stop;
 					}
 				}//01
-			} 
+			}
+			
+			testcase BGP_INCREMENTAL_UPDATE_STEP_ONE() runs on BGPPLUS_MTC_Component system BGP_Interface
+			{
+				var integer KeepAliveTimes := 10;
+				var integer UpdateNum :=2;
+				map(mtc:BGPPLUS_port_map, system:BGP_Interface_PortA);
+				BGPPLUS_port_map.send(OPEN_SEND_FROM_A);
+				BGP_Timer_Hold.start;
+				BGP_Timer_KeepAlive.start;
+				alt	//01
+				{ //wait for receive open frame
+					[]BGPPLUS_port_map.receive(OPEN_AND_KEEPALIVE_RECEIVE)
+					{
+						BGPPLUS_port_map.send(KEEPALIVE_SEND);
+						BGP_Timer_Hold.start;
+						BGP_Timer_KeepAlive.start;
+						alt //02
+						{
+							[]BGPPLUS_port_map.receive(KEEPALIVE_RECEIVE)
+							{
+								BGPPLUS_port_map.send(KEEPALIVE_SEND);
+								BGP_Timer_Hold.start;
+				                BGP_Timer_KeepAlive.start;
+				                alt   //03
+								{
+									[]BGPPLUS_port_map.receive(UPDATE_RECEIVE)
+									{
+										BGPPLUS_port_map.send(KEEPALIVE_SEND);
+										BGP_Timer_Hold.start;
+										BGP_Timer_KeepAlive.start;
+										label L5
+										alt
+										{
+											[]BGPPLUS_port_map.receive(KEEPALIVE_RECEIVE)
+											{
+												if(KeepAliveTimes > 0)
+												{
+													if (UpdateNum <= 0)
+													{
+														var integer KeepAlive_Interrupt := 2;
+														BGP_Timer_KeepAlive.start;
+														label L6
+														alt   //05
+														{
+															[]BGPPLUS_port_map.receive(KEEPALIVE_RECEIVE)
+															{
+																KeepAlive_Interrupt :=KeepAlive_Interrupt-1;
+																if(KeepAlive_Interrupt>0)
+																{
+																	BGP_Timer_KeepAlive.start;
+																	goto L6;
+																}
+																else
+																{
+																	BGP_Timer_Hold.start;
+																	alt
+																	{
+																		[]BGPPLUS_port_map.receive(NOTIFICATION_RECEIVE)
+																		{
+																			setverdict(pass);
+																			stop;
+																		}
+																		[]BGPPLUS_port_map.receive
+																		{
+																			setverdict(fail);
+																			stop;
+																		}	
+																		[]BGP_Timer_Hold.timeout	
+																		{
+																			setverdict(fail);
+																			stop;
+																		}
+																	}
+																}
+															}
+															[]BGP_Timer_KeepAlive.timeout	
+															{
+																setverdict(fail);
+																stop;
+															}
+														}   // 05 setverdict(pass);			
+													}
+													else
+													{
+														BGPPLUS_port_map.send(KEEPALIVE_SEND);
+														BGP_Timer_Hold.start;
+														BGP_Timer_KeepAlive.start;
+														KeepAliveTimes := KeepAliveTimes -1;
+														goto L5;
+													}
+												}
+												else
+												{
+													setverdict(pass);
+													stop;
+												}
+											}
+											[]BGPPLUS_port_map.receive(UPDATE_RECEIEVE_FROM_QUA_A)
+											{
+												UpdateNum := UpdateNum - 1;
+												BGPPLUS_port_map.send(KEEPALIVE_SEND);
+												BGP_Timer_Hold.start;
+												BGP_Timer_KeepAlive.start;
+												KeepAliveTimes := KeepAliveTimes -1;
+												goto L5;
+											}
+											[]BGPPLUS_port_map.receive(UPDATE_RECEIEVE_FROM_Q_A_Two_Incre)
+											{
+												UpdateNum := UpdateNum - 2;
+												BGPPLUS_port_map.send(KEEPALIVE_SEND);
+												BGP_Timer_Hold.start; 
+												BGP_Timer_KeepAlive.start;
+												KeepAliveTimes := KeepAliveTimes -1;
+												goto L5;
+											}
+											[]BGP_Timer_KeepAlive.timeout
+											{
+												setverdict(fail);
+												stop;
+											}
+											[]BGP_Timer_Hold.timeout	
+											{
+												setverdict(fail);
+												stop;
+											}
+										}
+									}
+									[]BGPPLUS_port_map.receive	
+									{
+										setverdict(fail);
+										stop;
+									}
+									[]BGP_Timer_KeepAlive.timeout
+									{
+										setverdict(fail);
+										stop;
+									}
+								}
+
+							}
+							[]BGPPLUS_port_map.receive	
+							{
+								setverdict(fail);
+								stop;
+							}
+							[]BGP_Timer_KeepAlive.timeout
+							{
+								setverdict(fail);
+								stop;
+							}
+						}
+					}
+					[]BGPPLUS_port_map.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					[]BGP_Timer_Hold.timeout	
+					{
+						setverdict(fail);
+						stop;
+					}
+				}//01
+			}
+			testcase BGP_INCREMENTAL_UPDATE_STEP_TWO() runs on BGPPLUS_MTC_Component system BGP_Interface
+			{
+				var integer KeepAliveTimes := 10;
+				var integer UpdateNum :=2;
+				map(mtc:BGPPLUS_port_map, system:BGP_Interface_PortA);
+				BGPPLUS_port_map.send(OPEN_SEND_FROM_A);
+				BGP_Timer_Hold.start;
+				BGP_Timer_KeepAlive.start;
+				alt	//01
+				{ //wait for receive open frame
+					[]BGPPLUS_port_map.receive(OPEN_AND_KEEPALIVE_RECEIVE)
+					{
+						BGPPLUS_port_map.send(KEEPALIVE_SEND_TWO);
+						BGP_Timer_Hold.start;
+						BGP_Timer_KeepAlive.start;
+						alt //02
+						{
+							[]BGPPLUS_port_map.receive(KEEPALIVE_AND_UPFATE_RECEIVE)
+							{
+								BGP_Timer_Hold.start;
+								alt //03
+								{
+									[]BGPPLUS_port_map.receive(UPDATE_AND_WD_RECEIEVE_FROM_QUA_A)
+									{
+										setverdict(pass);
+										stop;
+									}
+									[]BGPPLUS_port_map.receive	
+									{
+										setverdict(fail);
+										stop;
+									}
+									[]BGP_Timer_Hold.timeout
+									{
+										setverdict(fail);
+										stop;
+									}
+								}
+								
+							}
+							[]BGPPLUS_port_map.receive	
+							{
+								setverdict(fail);
+								stop;
+							}
+							[]BGP_Timer_KeepAlive.timeout
+							{
+								setverdict(fail);
+								stop;
+							}
+							[]BGP_Timer_Hold.timeout
+							{
+								setverdict(fail);
+								stop;
+							}
+						}
+					}
+					[]BGPPLUS_port_map.receive
+					{
+						setverdict(fail);
+						stop;
+					}
+					[]BGP_Timer_Hold.timeout	
+					{
+						setverdict(fail);
+						stop;
+					}
+				}//01
+			}
 		}
 		
 }//end module BGPPLUS_TESTCASE
